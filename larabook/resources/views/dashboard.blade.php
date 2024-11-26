@@ -18,9 +18,12 @@
             </style>
         @endif
 </head>
-<body id="app" class="font-sans antialiased dark:bg-black dark:text-white/50" >
+<body class="font-sans antialiased dark:bg-black dark:text-white/50" >
+    <div id="app">
+    <increment-counter />
+    </div>
 <increment-counter />
-<div  class="app p-6 text-gray-900">
+<div  class="p-6 text-gray-900">
 <increment-counter />
     <h1>hello </h1>
 </div>
