@@ -1,0 +1,9 @@
+Apache sin webfolder /var/www/html
+Ditt prosjekt /var/www/html/larabook/larabook
+
+
+Permission feil angående storage, prøv:
+
+Gi rettigheter til å skrive til filer i storage, rekursivt (i prosjektet ditt):
+sudo chmod 775 -R storage/
+
