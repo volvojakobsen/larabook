@@ -20,7 +20,11 @@
 </head>
 <body id="app" class="font-sans antialiased dark:bg-black dark:text-white/50" >
 <increment-counter />
-<div  class="app p-6 text-gray-900">
+    <div>
+    <increment-counter />
+    </div>
+<increment-counter />
+<div  class="p-6 text-gray-900">
 <increment-counter />
     <h1>hello </h1>
 </div>

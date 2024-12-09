@@ -930,18 +930,24 @@
                                 <x-nav-link href="#">My venues</x-nav-link>
 
                                 <x-nav-link href="#">Profile</x-nav-link>
-
-                                <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
-
-                                <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
                             </div>
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
+                            @guest
+                                <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
 
-                            <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
+                                <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
+                            @endguest
+                            @auth
+                                <x-nav-link href="/profile" :active="request()->is('register')">Profile</x-nav-link>
+
+                                <form method="POST" action="/logout">
+                                    @csrf
+                                    <button>Log Out</button>
+                                </form>
+                            @endauth
                         </div>
                     </div>
                     <div class="-mr-2 flex md:hidden">

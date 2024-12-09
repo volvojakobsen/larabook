@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('address');
+            $table->string('city');
+            $table->string('postal');
+            $table->string('company');
             $table->integer('phone');
-            $table->boolean('isVenueAdmin');
+            //$table->boolean(['isVenueAdmin'=> false]);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
