@@ -1,40 +1,24 @@
 <x-layout>
 <x-slot:heading>
-        Register
+        Add A New Venue
     </x-slot:heading>
 
-<form method="POST" action="/register">
+<form method="POST" action="/venue">
     @csrf
   <div class="space-y-12">
 
     <div class="border-b border-gray-900/10 pb-12">
-      <h2 class="text-base/7 font-semibold text-gray-900">Personal Information</h2>
-      <p class="mt-1 text-sm/6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="sm:col-span-3">
-          <x-form-label for="first_name">First name</x-form-label>
+          <x-form-label for="name">Name</x-form-label>
           <div class="mt-2">
-            <x-form-input  name="first_name" id="first_name" placeholder="Ola-Roger" />
+            <x-form-input  name="name" id="name" placeholder="Telefjord-Arena" />
           </div>
-          <x-form-error name="first_name" />
+          <x-form-error name="name" />
         </div>
 
-        <div class="sm:col-span-3">
-          <x-form-label for="last_name" class="block text-sm/6 font-medium text-gray-900">Last name</x-form-label>
-          <div class="mt-2">
-            <x-form-input name="last_name" id="last_name" placeholder="Nordmann" />
-          </div>
-          <x-form-error name="last_name" />
-        </div>
-
-        <div class="sm:col-span-3">
-          <x-form-label for="email">email</x-form-label>
-          <div class="mt-2">
-            <x-form-input  type="email" name="email" id="email" placeholder="Ola-Roger@mail.com"  />
-          </div>
-          <x-form-error name="email" />
-        </div>
+        
 
         <div class="sm:col-span-3">
           <x-form-label for="address" >Address</x-form-label>
@@ -60,37 +44,29 @@
           <x-form-error name="postal" />
         </div>
 
-        <div class="sm:col-span-4">
-          <x-form-label for="company">Company name (optional)</x-form-label>
-          <div class="mt-2">
-            <x-form-input id="company" name="company" type="company" placeholder="Big Pharma"/>
-            <x-form-error name="company" />
-          </div>
-      </div>
-
         
       
       <div class="sm:col-span-4">
-          <x-form-label for="phone" >Phone Number</x-form-label>
+          <x-form-label for="price" >Price</x-form-label>
           <div class="mt-2">
-            <x-form-input id="phone" name="phone" type="phone" placeholder="+47 800-55-800"/>
-            <x-form-error name="phone" />
+            <x-form-input id="price" name="price" type="price" placeholder="+47 800-55-800"/>
+            <x-form-error name="price" />
           </div>
       </div>
       <div class="sm:col-span-3">
-          <x-form-label for="password" class="block text-sm/6 font-medium text-gray-900">Password</x-form-label>
+          <x-form-label for="image" class="block text-sm/6 font-medium text-gray-900">Image</x-form-label>
           <div class="mt-2">
-            <x-form-input type="password" name="password" id="password" />
+            <x-form-input type="text" name="image" id="image" />
           </div>
-          <x-form-error name="password" />
+          <x-form-error name="image" />
         </div>
 
         <div class="sm:col-span-3">
-          <x-form-label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900">Confirm Password</x-form-label>
+          <x-form-label for="description" class="block text-sm/6 font-medium text-gray-900">Description</x-form-label>
           <div class="mt-2">
-            <x-form-input type="password" name="password_confirmation" id="password_confirmation" />
+            <x-form-input type="textarea" name="description" id="description" />
           </div>
-          <x-form-error name="password_confirmation" />
+          <x-form-error name="description" />
         </div>
     </div>
 

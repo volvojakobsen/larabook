@@ -3,10 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\VenueController;
 
 Route::get('/', function () {
     return view('home');
 });
+
+//venues
+Route::get('/venue/create', [VenueController::class, 'create']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
