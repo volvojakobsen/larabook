@@ -940,6 +940,14 @@
 
                                 <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
                             @endguest
+                            @auth
+                                <x-nav-link href="/profile" :active="request()->is('register')">Profile</x-nav-link>
+
+                                <form method="POST" action="/logout">
+                                    @csrf
+                                    <button>Log Out</button>
+                                </form>
+                            @endauth
                         </div>
                     </div>
                     <div class="-mr-2 flex md:hidden">
