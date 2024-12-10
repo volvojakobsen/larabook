@@ -11,6 +11,7 @@ Route::get('/', function () {
 
 //venues
 Route::get('/venue/create', [VenueController::class, 'create']);
+Route::post('/venue', [VenueController::class, 'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

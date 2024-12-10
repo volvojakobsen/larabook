@@ -3,7 +3,7 @@
         Add A New Venue
     </x-slot:heading>
 
-<form method="POST" action="/venue">
+<form method="POST" action="/venue" enctype="multipart/form-data">
     @csrf
   <div class="space-y-12">
 
@@ -56,7 +56,7 @@
       <div class="sm:col-span-3">
           <x-form-label for="image" class="block text-sm/6 font-medium text-gray-900">Image</x-form-label>
           <div class="mt-2">
-            <x-form-input type="text" name="image" id="image" />
+            <x-form-input type="file" name="image" id="image" />
           </div>
           <x-form-error name="image" />
         </div>
