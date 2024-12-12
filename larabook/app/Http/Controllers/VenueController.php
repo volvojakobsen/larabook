@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\venue;
+use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\File;
 
-class venueController extends Controller
+class VenueController extends Controller
 {
     public function index()
     {
-
+        return  Venue::all();
+         
     }
 
     public function create()
@@ -31,7 +32,7 @@ class venueController extends Controller
             'city' => ['required'],
             'postal' => ['required'],
             'price' => ['required'],
-            'image' => ['required', File::types(['png', 'jpg', 'jpeg'])],
+            'image' => ['required', File::types(['png', 'jpg', 'jpeg', 'webp'])],
             'description' => ['required'],
         ]);
 

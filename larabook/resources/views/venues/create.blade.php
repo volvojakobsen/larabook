@@ -3,7 +3,7 @@
         Add A New Venue
     </x-slot:heading>
 
-<form method="POST" action="/venue" enctype="multipart/form-data">
+<form method="POST" action="/venue/store" enctype="multipart/form-data">
     @csrf
   <div class="space-y-12">
 

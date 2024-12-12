@@ -905,7 +905,7 @@
     @endif
 </head>
 
-<body class="h-full">
+<body id="app" class="h-full">
     <!--
   This example requires updating your template:
 
@@ -1012,5 +1012,4 @@
     </div>
 
 </body>
-
 </html>

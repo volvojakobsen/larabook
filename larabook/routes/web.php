@@ -1,17 +1,19 @@
 <?php
 
+use App\Models\Venue;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VenueController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\VenueController;
 
 Route::get('/', function () {
     return view('home');
 });
 
 //venues
+Route::get('/venue/getList', [VenueController::class, 'index']);
 Route::get('/venue/create', [VenueController::class, 'create']);
-Route::post('/venue', [VenueController::class, 'store']);
+Route::post('/venue/store', [VenueController::class, 'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
