@@ -16,8 +16,14 @@ class Venue extends Model
         'postal',
         'price',
         'image',
+        'user_id',
         'description',
     ];
+
+    public function venueOwner()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
     public function getImageAttribute()
     {

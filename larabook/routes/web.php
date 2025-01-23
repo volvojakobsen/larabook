@@ -14,6 +14,8 @@ Route::get('/', function () {
 Route::get('/venue/getList', [VenueController::class, 'index']);
 Route::get('/venue/create', [VenueController::class, 'create']);
 Route::post('/venue/store', [VenueController::class, 'store']);
+Route::get('/venue/edit', [VenueController::class, 'edit']);
+Route::get('/venue/show/{id}', [VenueController::class, 'show']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

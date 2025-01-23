@@ -17,6 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public function venues()
+     {
+        return $this->hasMany(venue::class);
+     }
+
     protected $fillable = [
         'first_name',
         'last_name',
