@@ -22,7 +22,9 @@ class VenueController extends Controller
 
     public function show($id)
     {
-        dd(Venue::find($id));
+        $venue = Venue::find($id);
+
+        return view('venues.show', ['Venue' => $venue]);
     }
 
     public function store(Request $request)
