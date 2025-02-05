@@ -14,7 +14,9 @@ Route::get('/', function () {
 Route::get('/venue/getList', [VenueController::class, 'index']);
 Route::get('/venue/create', [VenueController::class, 'create']);
 Route::post('/venue/store', [VenueController::class, 'store']);
-Route::get('/venue/edit', [VenueController::class, 'edit']);
+Route::get('/venue/edit/{id}', [VenueController::class, 'edit']);
+Route::patch('/venue/{id}', [VenueController::class, 'update']);
+Route::delete('/venue/{id}', [VenueController::class, 'destroy']);
 Route::get('/venue/show/{id}', [VenueController::class, 'show']);
 
 Route::get('/dashboard', function () {

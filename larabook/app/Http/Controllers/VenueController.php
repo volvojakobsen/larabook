@@ -68,18 +68,48 @@ class VenueController extends Controller
         return redirect('/');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return view('venues.edit');
+        $venue = Venue::find($id);
+
+        return view('venues.edit', ['Venue' => $venue]);
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
-        
+        $venueAttributes = $request->validate([
+            'name' => ['required'],
+            'address' => ['required'],
+            'city' => ['required'],
+            'postal' => ['required'],
+            'price' => ['required'],
+            'image' => ['required', File::types(['png', 'jpg', 'jpeg', 'webp'])],
+            'description' => ['required'],
+        ]);
+
+        $venueImagePath = $request->image->store('venueImages');
+
+        $venue = Venue::findOrFail($id);
+
+        $venue->update([
+            'name' => request('name'),
+            'address' => request('address'),
+            'city' => request('city'),
+            'postal' => request('postal'),
+            'price' => request('price'),
+            'image' => $venueImagePath,
+            'description' => request('description'),
+           // 'user_id' => Auth::id()
+        ]);
+
+        return redirect('/');
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        
+        $venue = Venue::findOrFail($id);
+        $venue->delete();
+
+        return redirect('/');
     }
 }

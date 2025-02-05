@@ -11,6 +11,7 @@ const getVenues = () => {
 }
 
 onMounted(() => getVenues());
+
 </script>
 
 <template>
