@@ -18,9 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-     public function venues()
+     public function venue()
      {
-        return $this->hasMany(venue::class);
+        return $this->hasMany(Venue::class, 'user_id');
      }
 
     protected $fillable = [

@@ -22,7 +22,7 @@ class Venue extends Model
 
     public function venueOwner()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(\App\Models\User::class, 'id');
     }
 
     public function getImageAttribute()

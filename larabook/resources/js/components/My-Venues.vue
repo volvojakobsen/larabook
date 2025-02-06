@@ -5,12 +5,13 @@ import axios from "axios";
 const venues = ref([]);
 
 const getVenues = () => {
-  axios.get('/venue/getList')
+  axios.get('/venue/getUsersVenues')
     .then(res => venues.value = res.data)
     .catch(error => console.log(error))
 }
 
 onMounted(() => getVenues());
+console.log(venues);
 
 </script>
 

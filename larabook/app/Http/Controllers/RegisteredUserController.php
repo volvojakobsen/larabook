@@ -35,4 +35,10 @@ class RegisteredUserController extends Controller
 
         return redirect('/');
     }
+
+    public function show()
+    {
+        $user= Auth::user();
+        return view('auth.profile', ['user' => $user]);
+    }
 }

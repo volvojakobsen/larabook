@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,30 +10,39 @@ use Illuminate\Validation\Rules\File;
 
 class VenueController extends Controller
 {
+    //home
     public function index()
     {
         return  Venue::all();
          
     }
 
+    public function getUsersVenues()
+    {
+        return Auth::user()->venue;
+    }
+    // create view
     public function create()
     {
         return view('venues.create');
     }
 
+    // spesific venue
     public function show($id)
     {
         $venue = Venue::findOrFail($id);
 
         return view('venues.show', ['Venue' => $venue]);
     }
-
+    
+    // axios request for specific venue page
     public function findRequest($id)
     {
 
         return Venue::findOrFail($id);
     }
 
+    // store new venue
     public function store(Request $request)
     {
         $venueAttributes = $request->validate([
@@ -76,6 +86,7 @@ class VenueController extends Controller
         return redirect('/');
     }
 
+    // edit venue
     public function edit($id)
     {
         $venue = Venue::find($id);
@@ -83,6 +94,7 @@ class VenueController extends Controller
         return view('venues.edit', ['Venue' => $venue]);
     }
 
+    // update venue
     public function update(Request $request, $id)
     {
         $venueAttributes = $request->validate([
@@ -113,6 +125,7 @@ class VenueController extends Controller
         return redirect('/');
     }
 
+    // delete venue
     public function destroy($id)
     {
         $venue = Venue::findOrFail($id);
