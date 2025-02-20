@@ -1,9 +1,12 @@
+
+
 <x-layout>
 <x-slot:heading>
         Home
     </x-slot:heading>
-    <h1 class="">Home page</h1>
-    <x-nav-link href="/venue/create" >Add venue</x-nav-link>
+    @if (Auth::check() && Auth::user()->isVenueAdmin)
+                                <a href="/venue/edit/1">Edit Venue</a>
+    @endif
 {{ $Venue->name }}
 <Venue />
 </x-layout>

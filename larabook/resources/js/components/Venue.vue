@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import axios from "axios";
 
  const venue = ref([]);
+ 
 
  const url = new URL(window.location.href);
  const queryParams = new URLSearchParams(url.search);
@@ -13,7 +14,9 @@ const getVenue = () => {
     .catch(error => console.log(error))
 }
 
+
 onMounted(() => getVenue());
+
 
 </script>
 

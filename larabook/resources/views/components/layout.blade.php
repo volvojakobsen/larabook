@@ -927,9 +927,9 @@
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
 
-                                @auth
+                                @if (Auth::check() && Auth::user()->isVenueAdmin)
                                 <x-nav-link href="/myVenues/index">My venues</x-nav-link>
-                                @endauth
+                                @endif
                             </div>
                         </div>
                     </div>
