@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('postal');
             $table->string('company');
             $table->integer('phone');
-            //$table->boolean(['isVenueAdmin'=> false]);
+            $table->boolean('isVenueAdmin')->default(0);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

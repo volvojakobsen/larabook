@@ -125,6 +125,11 @@ class VenueController extends Controller
         return redirect('/');
     }
 
+    public function myVenues() 
+    {
+        return view('myVenues.index');
+    }
+
     // delete venue
     public function destroy($id)
     {
