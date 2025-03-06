@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 //venues
 Route::get('/venue/getList', [VenueController::class, 'index']);
-Route::get('/venue/getUsersVenues', [VenueController::class, 'getUsersVenues']);
+Route::get('/venue/getUsersVenues', [VenueController::class, 'getUsersVenues'])->middleware(Admin::class);
 Route::get('/venue/create', [VenueController::class, 'create'])->middleware(Admin::class);
 Route::post('/venue/store', [VenueController::class, 'store'])->middleware(Admin::class);
 Route::get('/venue/edit/{id}', [VenueController::class, 'edit'])->middleware(Admin::class);

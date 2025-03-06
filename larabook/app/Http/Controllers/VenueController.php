@@ -13,8 +13,7 @@ class VenueController extends Controller
     //home
     public function index()
     {
-        return  Venue::all();
-         
+        return  Venue::paginate(2);         
     }
 
     public function getUsersVenues()
@@ -127,7 +126,9 @@ class VenueController extends Controller
 
     public function myVenues() 
     {
-        return view('myVenues.index');
+        $allVenues = Venue::all();
+
+        return view('myVenues.index', ['venues' => $allVenues]);
     }
 
     // delete venue

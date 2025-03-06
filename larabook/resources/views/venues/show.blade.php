@@ -1,12 +1,16 @@
-
-
 <x-layout>
-<x-slot:heading>
-        Home
+    <x-slot:heading>
+        <div class="flex flex-row gap-3">
+        {{ $Venue->name }}
+        @if (Auth::check() && Auth::user()->isVenueAdmin && Auth::user()->id === $Venue->user_id)
+        <x-editVenue-button href="/venue/edit/{{$Venue->id}}">Edit Venue</x-editVenue-button>
+        <form action="/venue/{{$Venue->id}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <x-delete-button type="submit">Delete Venue</x-delete-button>
+        </form>
+        @endif
+        </div>
     </x-slot:heading>
-    @if (Auth::check() && Auth::user()->isVenueAdmin)
-                                <a href="/venue/edit/1">Edit Venue</a>
-    @endif
-{{ $Venue->name }}
-<Venue />
+    <Venue />
 </x-layout>
