@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Venue;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
@@ -127,8 +128,9 @@ class VenueController extends Controller
     public function myVenues() 
     {
         $allVenues = Venue::all();
+        $allproducts = Product::all();
 
-        return view('myVenues.index', ['venues' => $allVenues]);
+        return view('myVenues.index', ['venues' => $allVenues, 'products' => $allproducts]);
     }
 
     // delete venue
