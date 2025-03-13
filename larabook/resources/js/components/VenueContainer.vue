@@ -46,5 +46,4 @@ onMounted(() => getVenues());
         @pagination-change-page="getVenues"
     />
   </div>
-  {{ venues }}
 </template>
