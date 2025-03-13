@@ -17,6 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public function venue()
+     {
+        return $this->hasMany(Venue::class, 'user_id');
+     }
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -27,6 +33,7 @@ class User extends Authenticatable
         'company',
         'phone',
         'password',
+        'isVenueAdmin',
     ];
 
     /**

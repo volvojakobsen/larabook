@@ -26,13 +26,21 @@ class RegisteredUserController extends Controller
             'company' => ['required'],
             'phone' => ['required'],
             'password' => ['required', Password::min(6), 'confirmed'],
-            'password_confirmation' => ['required']
+            'password_confirmation' => ['required'],
+            'isVenueAdmin' => ['required'],
         ]);
+
 
         $user = User::create($validatedAttributes);
 
         Auth::login($user);
 
         return redirect('/');
+    }
+
+    public function show()
+    {
+        $user= Auth::user();
+        return view('auth.profile', ['user' => $user]);
     }
 }

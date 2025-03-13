@@ -905,7 +905,7 @@
     @endif
 </head>
 
-<body class="h-full">
+<body id="app" class="h-full">
     <!--
   This example requires updating your template:
 
@@ -927,9 +927,9 @@
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
 
-                                <x-nav-link href="#">My venues</x-nav-link>
-
-                                <x-nav-link href="#">Profile</x-nav-link>
+                                @if (Auth::check() && Auth::user()->isVenueAdmin)
+                                <x-nav-link href="/myVenues/index">My venues</x-nav-link>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -1012,5 +1012,4 @@
     </div>
 
 </body>
-
 </html>
