@@ -39,18 +39,43 @@ class ProductsController extends Controller
         return redirect('/myVenues/index');
     }
 
-    public function edit() 
+    public function edit($id) 
     {
-        
+        $product = Product::find($id);
+
+        //dd($product);
+
+        return view('products.edit', ['product' => $product]);
     }
 
-    public function update() 
+    public function update(Request $request, $id) 
     {
-        
+        $productAttributes = $request->validate([
+            'title' => ['required'],
+            'price' => ['required'],
+            'description' => ['required'],
+        ]);
+
+
+        $product = Product::findOrFail($id);
+
+        $product->update([
+            'title' => request('title'),
+            'price' => request('price'),
+            'description' => request('description'),
+           // 'user_id' => Auth::id()
+        ]);
+
+        return redirect('/myVenues/index');
     }
 
-    public function destroy() 
+    public function destroy($id) 
     {
-        
+        //dd('hello');
+        $product = Product::findOrFail($id);
+        //dd($product);
+        $product->delete();
+
+        return redirect('/myVenues/index');
     }
 }

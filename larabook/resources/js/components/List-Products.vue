@@ -18,7 +18,7 @@ console.log(products);
 <template>
   <div class="flex flex-wrap gap-3 justify-center">
     <div v-for="product in products" class="w-96 h-96 border border-sky-500 shadow-lg rounded-xl bg-white">
-      <a :href="'/venue/' + product.id + '?id=' + product.id">
+      <a :href="'/products/edit/' + product.id + '?id=' + product.id">
         <h3 class="text-center m-1">{{ product.title }}</h3>
         <div class="flex justify-between mt-1">
           <h4 class="ml-8">{{ product.price }} NOK</h4>

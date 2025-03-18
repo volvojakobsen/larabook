@@ -24,9 +24,12 @@ Route::get('/venueRequest/{id}', [VenueController::class, 'findRequest']);
 Route::get('/myVenues/index', [VenueController::class, 'myVenues'])->middleware(Admin::class);
 
 //products
-Route::get('/products/index', [ProductsController::class, 'index']);
+Route::get('/products/index', [ProductsController::class, 'index'])->middleware(Admin::class);
 Route::get('/products/create', [ProductsController::class, 'create'])->middleware(Admin::class);
 Route::post('/products/store', [productsController::class, 'store'])->middleware(Admin::class);
+Route::get('/products/edit/{id}', [productsController::class, 'edit'])->middleware(Admin::class);
+Route::patch('/products/{id}', [productsController::class, 'update'])->middleware(Admin::class);
+Route::delete('/products/{id}', [productsController::class, 'destroy'])->middleware(Admin::class);
 
 
 Route::get('/dashboard', function () {
