@@ -945,7 +945,7 @@
 
                                 <form method="POST" action="/logout">
                                     @csrf
-                                    <x-editVenue-button>Log Out</x-editVenue-button>
+                                    <x-logoutButton>Log Out</x-logoutButton>
                                 </form>
                             @endauth
                         </div>
