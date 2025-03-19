@@ -23,6 +23,11 @@ class User extends Authenticatable
         return $this->hasMany(Venue::class, 'user_id');
      }
 
+     public function products()
+     {
+        return $this->hasMany(Venue::class, 'user_id');
+     }
+
     protected $fillable = [
         'first_name',
         'last_name',
