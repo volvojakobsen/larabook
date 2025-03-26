@@ -35,5 +35,10 @@ class Venue extends Model
         return url('storage/'.$this->image);
     }
 
+    public function bookings()
+     {
+        return $this->hasMany(Bookings::class, 'id');
+     }
+
 
 }

@@ -4,6 +4,7 @@ use App\Http\Middleware\LoggedIn;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\BookingsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\RegisteredUserController;
 
@@ -22,6 +23,9 @@ Route::delete('/venue/{id}', [VenueController::class, 'destroy'])->middleware(Ad
 Route::get('/venue/{id}', [VenueController::class, 'show']);
 Route::get('/venueRequest/{id}', [VenueController::class, 'findRequest']);
 Route::get('/myVenues/index', [VenueController::class, 'myVenues'])->middleware(Admin::class);
+
+//bookings
+Route::get('/bookings/index', [BookingsController::class, 'index']);
 
 //products
 Route::get('/products/index', [ProductsController::class, 'index'])->middleware(Admin::class);

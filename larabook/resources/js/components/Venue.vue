@@ -34,4 +34,5 @@ onMounted(() => getVenue());
         </div>
         <p>{{ venue.description }}</p>
     </div>
+    <BookModal/>
 </template>
