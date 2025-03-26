@@ -1,21 +1,24 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from "axios";
+import BookModal from './BookModal.vue';
 
- const venue = ref([]);
- 
+const venue = ref([]);
 
- const url = new URL(window.location.href);
- const queryParams = new URLSearchParams(url.search);
+
+const url = new URL(window.location.href);
+const queryParams = new URLSearchParams(url.search);
 
 const getVenue = () => {
-  axios.get('/venueRequest/' + queryParams.get('id'))
-    .then(res => venue.value = res.data)
-    .catch(error => console.log(error))
+    axios.get('/venueRequest/' + queryParams.get('id'))
+        .then(res => venue.value = res.data)
+        .catch(error => console.log(error))
 }
 
 
 onMounted(() => getVenue());
+
+let showModal = ref(false);
 
 
 </script>
@@ -34,5 +37,20 @@ onMounted(() => getVenue());
         </div>
         <p>{{ venue.description }}</p>
     </div>
-    <BookModal/>
+    <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        Button
+    </button>
+    <Teleport to="body">
+        <BookModal :show="showModal" @close="showModal = false">
+            <template #header>
+                <h1>book venue: {{ venue.name }}</h1>
+            </template>
+
+            <template #default>
+                <p>form insert here</p>
+            </template>
+
+            <template #footer></template>
+        </BookModal>
+    </Teleport>
 </template>
