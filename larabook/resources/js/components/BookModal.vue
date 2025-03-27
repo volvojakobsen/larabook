@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
-    show: Boolean
+    show: Boolean,
+    venueObject: Object
 });
 </script>
 

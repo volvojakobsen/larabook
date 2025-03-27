@@ -26,6 +26,7 @@ Route::get('/myVenues/index', [VenueController::class, 'myVenues'])->middleware(
 
 //bookings
 Route::get('/bookings/index', [BookingsController::class, 'index']);
+Route::post('/bookings/store', [BookingsController::class, 'store']);
 
 //products
 Route::get('/products/index', [ProductsController::class, 'index'])->middleware(Admin::class);

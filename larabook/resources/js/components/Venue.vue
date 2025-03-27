@@ -41,16 +41,37 @@ let showModal = ref(false);
         Button
     </button>
     <Teleport to="body">
-        <BookModal :show="showModal" @close="showModal = false">
+        <BookModal :show="showModal" :venue @close="showModal = false">
             <template #header>
                 <h1>book venue: {{ venue.name }}</h1>
             </template>
 
             <template #default>
-                <p>form insert here</p>
+                <form id="booking-form" action="http://larabook.test/bookings/store" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <meta name="csrf-token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="_method" value="POST" />
+                    <label for="dateFrom">From Date</label>
+                    <input name="dateFrom" id="dateFrom" type="date"/>
+                    <label for="dateTo">To Date</label>
+                    <input name="dateTo" id="dateTo" type="date"/>
+                    <input type="number" name="venue_id" value="{{ venue.id }}"  />
+                    <input type="number" name="totalPrice" value="{{ venue.price }}"  />
+                    <h1>venue id: {{ venue.id }}</h1>
+                    <h1>venue price: {{ venue.price }}</h1>
+
+                </form>
             </template>
 
-            <template #footer></template>
+            <template #footer>
+                <div class="flex justify-between">
+                    <button @click="showModal = false"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            cancel
+                        </button>
+                <button form="booking-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Submit</button>
+                </div>
+            </template>
         </BookModal>
     </Teleport>
 </template>
