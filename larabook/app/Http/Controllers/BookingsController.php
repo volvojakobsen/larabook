@@ -21,13 +21,13 @@ class BookingsController extends Controller
     public function store(Request $request) 
     {
 
-        dd($request);
+        //dd($request);
         $bookingAttributes = $request->validate([
-            'user_id' => ['required'],
+            // 'user_id' => ['required'],
             'venue_id' => ['required'],
             'dateFrom' => ['required'],
             'dateTo' => ['required'],
-            'products' => ['optional'],
+            'products' => [],
             'totalPrice' => ['required'],
             
             
@@ -36,10 +36,10 @@ class BookingsController extends Controller
         Bookings::create([
             'user_id' => Auth::id(),
             'venue_id' => request('venue_id'),
-            'dateFrom' => request('city'),
-            'dateTo' => request('postal'),
-            'products' => request('price'),
-            'totalPrice' => request('description')
+            'dateFrom' => request('dateFrom'),
+            'dateTo' => request('dateTo'),
+            'products' => request('products'),
+            'totalPrice' => request('totalPrice')
         ]);
 
 

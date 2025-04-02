@@ -2,8 +2,16 @@
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 import BookModal from './BookModal.vue';
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
+
+const dateValue = ref({
+  startDate: "",
+  endDate: "",
+});
+
 
 const venue = ref([]);
+const csrf = window.csrf_token;
 
 
 const url = new URL(window.location.href);
@@ -15,10 +23,19 @@ const getVenue = () => {
         .catch(error => console.log(error))
 }
 
+const getCSRF = () => {
+    axios.get('/sanctum/csrf-cookie')
+    .then(res => csrf.value =res.data)
+    .catch(error => console.log(error))
+}
 
 onMounted(() => getVenue());
+// onMounted(() => getCSRF());
 
 let showModal = ref(false);
+
+
+
 
 
 </script>
@@ -47,18 +64,19 @@ let showModal = ref(false);
             </template>
 
             <template #default>
-                <form id="booking-form" action="http://larabook.test/bookings/store" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                    <meta name="csrf-token" value="{{ csrf_token() }}" />
-                    <input type="hidden" name="_method" value="POST" />
-                    <label for="dateFrom">From Date</label>
-                    <input name="dateFrom" id="dateFrom" type="date"/>
-                    <label for="dateTo">To Date</label>
-                    <input name="dateTo" id="dateTo" type="date"/>
-                    <input type="number" name="venue_id" value="{{ venue.id }}"  />
-                    <input type="number" name="totalPrice" value="{{ venue.price }}"  />
+                <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" :value="csrf" />
+                    <vue-tailwind-datepicker v-model="dateValue" as-single use-range placeholder="Select Dates From/To"/>
+                    <input name="dateFrom" id="dateFrom" :value="dateValue.startDate"/>
+                    <input  name="dateTo" id="dateTo" :value="dateValue.endDate"/>
+                    <input type="hidden" name="venue_id" :value="venue.id"  />
+                    <input type="hidden" name="products" value="ingenting"  />
+                    <input type="hidden" name="totalPrice" id="price" :value="venue.price"  />
                     <h1>venue id: {{ venue.id }}</h1>
                     <h1>venue price: {{ venue.price }}</h1>
+                    <h1>dateValue: {{ dateValue }}</h1>
+                    <h1>dateFrom: {{ dateValue.startDate }}</h1>
+                    <h1>dateTo: {{ dateValue.endDate }}</h1>
 
                 </form>
             </template>
