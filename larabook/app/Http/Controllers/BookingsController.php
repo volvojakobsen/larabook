@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingsController extends Controller
 {
-    public function index() 
+    public function index($id) 
     {
-        //return  Product::all();
+        return  Bookings::where('venue_id', $id)->get();
     }
 
     public function create() 

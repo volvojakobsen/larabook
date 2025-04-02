@@ -8,10 +8,17 @@ const dateValue = ref({
   startDate: "",
   endDate: "",
 });
+const formatter = ref({
+  date: 'DD MMM YYYY',
+  month: 'MMM',
+});
 
+
+const startFrom = new Date();
 
 const venue = ref([]);
 const csrf = window.csrf_token;
+const BookedDates = ref([]);
 
 
 const url = new URL(window.location.href);
@@ -20,6 +27,9 @@ const queryParams = new URLSearchParams(url.search);
 const getVenue = () => {
     axios.get('/venueRequest/' + queryParams.get('id'))
         .then(res => venue.value = res.data)
+        .then(getBookedDates())
+        .then(dDate())
+        .then(console.log(BookedDates))
         .catch(error => console.log(error))
 }
 
@@ -29,13 +39,19 @@ const getCSRF = () => {
     .catch(error => console.log(error))
 }
 
+const getBookedDates = () => {
+    axios.get('/bookings/' + queryParams.get('id'))
+    .then(res => BookedDates.value =res.data)
+    .catch(error => console.log(error))
+}
+
 onMounted(() => getVenue());
-// onMounted(() => getCSRF());
 
 let showModal = ref(false);
 
-
-
+function dDate(date) {
+  return date < new Date() || date > new Date()
+}
 
 
 </script>
@@ -66,17 +82,16 @@ let showModal = ref(false);
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
-                    <vue-tailwind-datepicker v-model="dateValue" as-single use-range placeholder="Select Dates From/To"/>
-                    <input name="dateFrom" id="dateFrom" :value="dateValue.startDate"/>
+                    <vue-tailwind-datepicker v-model="dateValue" :disable-date="dDate" :start-from="startFrom"  as-single use-range placeholder="Select Dates From/To"/>
+                    <input disabled name="dateFrom" id="dateFrom" :value="dateValue.startDate"/>
                     <input  name="dateTo" id="dateTo" :value="dateValue.endDate"/>
                     <input type="hidden" name="venue_id" :value="venue.id"  />
                     <input type="hidden" name="products" value="ingenting"  />
                     <input type="hidden" name="totalPrice" id="price" :value="venue.price"  />
-                    <h1>venue id: {{ venue.id }}</h1>
-                    <h1>venue price: {{ venue.price }}</h1>
-                    <h1>dateValue: {{ dateValue }}</h1>
-                    <h1>dateFrom: {{ dateValue.startDate }}</h1>
-                    <h1>dateTo: {{ dateValue.endDate }}</h1>
+                    <!-- <h1>{{ dateValue.startDate.toISOString().split('T')[0] }}</h1> -->
+                     <h1 :value="dateValue.startDate"></h1>
+                     <input disabled :value="dateValue.startDate"/>
+                    
 
                 </form>
             </template>
