@@ -14,13 +14,13 @@ const formatter = ref({
 });
 
 
-const startFrom = new Date();
+const startFrom = new Date(2025, 3, 11);
 
 const venue = ref([]);
 const csrf = window.csrf_token;
 const BookedDates = ref([]);
 
-
+// console.log(BookedDates);
 const url = new URL(window.location.href);
 const queryParams = new URLSearchParams(url.search);
 
@@ -28,8 +28,9 @@ const getVenue = () => {
     axios.get('/venueRequest/' + queryParams.get('id'))
         .then(res => venue.value = res.data)
         .then(getBookedDates())
-        .then(dDate())
+        // .then(dDate())
         .then(console.log(BookedDates))
+        // .then(makeDatesThing())
         .catch(error => console.log(error))
 }
 
@@ -49,8 +50,15 @@ onMounted(() => getVenue());
 
 let showModal = ref(false);
 
+// function makeDatesThing([BookedDates]) {
+// for (let i = 0; i < BookedDates.length; i++) {
+//     console.log("heyyya");
+    
+// }
+// }
+
 function dDate(date) {
-  return date < new Date() || date > new Date()
+  return date < new Date(2025, 3, 14) || date > new Date(2025, 3, 17)
 }
 
 
@@ -82,7 +90,8 @@ function dDate(date) {
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
-                    <vue-tailwind-datepicker v-model="dateValue" :disable-date="dDate" :start-from="startFrom"  as-single use-range placeholder="Select Dates From/To"/>
+                    <vue-tailwind-datepicker overlay :shortcuts="false" input-classes="block mb-2 text-sm font-medium text-green-700 dark:text-green-500" 
+                    v-model="dateValue" :disable-in-range="dDate" :start-from="startFrom"  as-single use-range placeholder="Select Dates From/To"/>
                     <input disabled name="dateFrom" id="dateFrom" :value="dateValue.startDate"/>
                     <input  name="dateTo" id="dateTo" :value="dateValue.endDate"/>
                     <input type="hidden" name="venue_id" :value="venue.id"  />
