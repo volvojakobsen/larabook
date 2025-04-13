@@ -2,19 +2,26 @@
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 import BookModal from './BookModal.vue';
-import VueTailwindDatepicker from "vue-tailwind-datepicker";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
-const dateValue = ref({
-  startDate: "",
-  endDate: "",
-});
-const formatter = ref({
-  date: 'DD MMM YYYY',
-  month: 'MMM',
-});
+const date = ref([]);
 
+const dateFrom = ref();
+const dateTo = ref();
 
-const startFrom = new Date(2025, 3, 11);
+const onRangeStart = (value) => {
+  dateFrom.value = new Date(value);
+}
+
+const onRangeEnd = (value) => {
+    dateTo.value = new Date(value);
+}
+
+const handleDate = (modelData) => {
+  date.value = modelData;
+  // do something else with the data
+}
 
 const venue = ref([]);
 const csrf = window.csrf_token;
@@ -55,11 +62,7 @@ let showModal = ref(false);
 //     console.log("heyyya");
     
 // }
-// }
 
-function dDate(date) {
-  return date < new Date(2025, 3, 14) || date > new Date(2025, 3, 17)
-}
 
 
 </script>
@@ -79,7 +82,7 @@ function dDate(date) {
         <p>{{ venue.description }}</p>
     </div>
     <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-        Button
+        Book Now
     </button>
     <Teleport to="body">
         <BookModal :show="showModal" :venue @close="showModal = false">
@@ -90,16 +93,13 @@ function dDate(date) {
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
-                    <vue-tailwind-datepicker overlay :shortcuts="false" input-classes="block mb-2 text-sm font-medium text-green-700 dark:text-green-500" 
-                    v-model="dateValue" :disable-in-range="dDate" :start-from="startFrom"  as-single use-range placeholder="Select Dates From/To"/>
-                    <input disabled name="dateFrom" id="dateFrom" :value="dateValue.startDate"/>
-                    <input  name="dateTo" id="dateTo" :value="dateValue.endDate"/>
-                    <input type="hidden" name="venue_id" :value="venue.id"  />
-                    <input type="hidden" name="products" value="ingenting"  />
-                    <input type="hidden" name="totalPrice" id="price" :value="venue.price"  />
+                    <VueDatePicker v-model="date" @update:model-value="handleDate" :teleport="true" :enable-time-picker="false" :min-date="new Date()" range ></VueDatePicker>
+                    <input name="dateFrom" id="dateFrom" :value="dateFrom"/>
+                    <input name="dateTo" id="dateTo" :value="dateTo" />
+                    <input type="" name="venue_id" id="venue_id" :value="venue.id" />
+                    <input type="" name="products" value="ingenting"  />
+                    <input type="" name="totalPrice" id="price" :value="venue.price"  />
                     <!-- <h1>{{ dateValue.startDate.toISOString().split('T')[0] }}</h1> -->
-                     <h1 :value="dateValue.startDate"></h1>
-                     <input disabled :value="dateValue.startDate"/>
                     
 
                 </form>
@@ -111,7 +111,7 @@ function dDate(date) {
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                             cancel
                         </button>
-                <button form="booking-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Submit</button>
+                <button form="booking-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Book</button>
                 </div>
             </template>
         </BookModal>
