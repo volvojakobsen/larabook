@@ -30,6 +30,7 @@ Route::post('/bookings/store', [BookingsController::class, 'store']);
 
 //products
 Route::get('/products/index', [ProductsController::class, 'index'])->middleware(Admin::class);
+Route::get('/products/show/{id}', [ProductsController::class, 'show'])->middleware(Admin::class);
 Route::get('/products/create', [ProductsController::class, 'create'])->middleware(Admin::class);
 Route::post('/products/store', [productsController::class, 'store'])->middleware(Admin::class);
 Route::get('/products/edit/{id}', [productsController::class, 'edit'])->middleware(Admin::class);

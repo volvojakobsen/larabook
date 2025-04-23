@@ -23,9 +23,9 @@ class User extends Authenticatable
         return $this->hasMany(Venue::class, 'user_id');
      }
 
-     public function products()
+     public function product()
      {
-        return $this->hasMany(Venue::class, 'user_id');
+        return $this->hasMany(Product::class, 'user_id');
      }
 
      public function bookings()

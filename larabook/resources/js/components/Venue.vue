@@ -5,17 +5,25 @@ import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-const date = ref([]);
+const date = ref();
 
 const dateFrom = ref();
 const dateTo = ref();
 
 const onRangeStart = (value) => {
-  dateFrom.value = new Date(value);
+  const day = value.getDate();
+  const month = value.getMonth() + 1;
+  const year = value.getFullYear();
+  const full = `${year}-${month}-${day}`;
+  dateFrom.value = full;
 }
 
 const onRangeEnd = (value) => {
-    dateTo.value = new Date(value);
+    const day = value.getDate();
+    const month = value.getMonth() + 1;
+    const year = value.getFullYear();
+    const full = `${year}-${month}-${day}`;
+    dateTo.value = full;
 }
 
 const handleDate = (modelData) => {
@@ -26,6 +34,7 @@ const handleDate = (modelData) => {
 const venue = ref([]);
 const csrf = window.csrf_token;
 const BookedDates = ref([]);
+const products = ref([]);
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -35,6 +44,7 @@ const getVenue = () => {
     axios.get('/venueRequest/' + queryParams.get('id'))
         .then(res => venue.value = res.data)
         .then(getBookedDates())
+        .then(getProducts())
         // .then(dDate())
         .then(console.log(BookedDates))
         // .then(makeDatesThing())
@@ -53,7 +63,16 @@ const getBookedDates = () => {
     .catch(error => console.log(error))
 }
 
-onMounted(() => getVenue());
+const getProducts = () => {
+    axios.get('/products/show/' + queryParams.get('userId'))
+    .then(res => products.value =res.data)
+    .then(console.log(products))
+    .catch(error => console.log(error))
+}
+
+onMounted(() => {
+  getVenue();
+});
 
 let showModal = ref(false);
 
@@ -77,6 +96,7 @@ let showModal = ref(false);
                 <h4>{{ venue.city }}</h4>
                 <h4>{{ venue.postal }}</h4>
                 <h4>{{ venue.price }} NOK/day</h4>
+                <h4>{{ venue.user_id }}</h4>
             </div>
         </div>
         <p>{{ venue.description }}</p>
@@ -93,9 +113,10 @@ let showModal = ref(false);
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
-                    <VueDatePicker v-model="date" @update:model-value="handleDate" :teleport="true" :enable-time-picker="false" :min-date="new Date()" range ></VueDatePicker>
+                    <VueDatePicker v-model="date" :model-value="date" @update:model-value="handleDate" :teleport="true" :enable-time-picker="false" :min-date="new Date()" range @range-start="onRangeStart" @range-end="onRangeEnd" model-type="yyyy.MM.dd"></VueDatePicker>
                     <input name="dateFrom" id="dateFrom" :value="dateFrom"/>
                     <input name="dateTo" id="dateTo" :value="dateTo" />
+                    <h3>Add Products and Services</h3>
                     <input type="" name="venue_id" id="venue_id" :value="venue.id" />
                     <input type="" name="products" value="ingenting"  />
                     <input type="" name="totalPrice" id="price" :value="venue.price"  />
