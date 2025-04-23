@@ -117,6 +117,19 @@ let showModal = ref(false);
                     <input name="dateFrom" id="dateFrom" :value="dateFrom"/>
                     <input name="dateTo" id="dateTo" :value="dateTo" />
                     <h3>Add Products and Services</h3>
+                    <div v-for="product in products" class="border">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4>{{ product.title }}</h4>
+                                <h4>price: NOK {{ product.price }}</h4>
+                                <p>{{ product.description }}</p>
+                                <p>product id {{ product.id }}</p>
+                            </div>
+                            <div class="m-6">
+                                <input type="checkbox" :value="product.price" name="" id="">
+                            </div>
+                        </div>
+                    </div>
                     <input type="" name="venue_id" id="venue_id" :value="venue.id" />
                     <input type="" name="products" value="ingenting"  />
                     <input type="" name="totalPrice" id="price" :value="venue.price"  />
