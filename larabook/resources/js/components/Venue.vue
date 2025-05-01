@@ -3,7 +3,10 @@ import { onMounted, ref } from 'vue';
 import axios from "axios";
 import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 const date = ref();
 
@@ -37,6 +40,10 @@ const BookedDates = ref([]);
 const products = ref([]);
 const totalPrice = 10;
 const addedProducts = ref([]);
+const calendarOptions = ref({
+        plugins: [ dayGridPlugin, interactionPlugin ],
+        initialView: 'dayGridMonth'
+    });
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -99,7 +106,8 @@ let showModal = ref(false);
 </script>
 
 <template>
-    <div class="mainContainer flex items-center flex-col flex-wrap gap-3 w-fit justify-center">
+    <div class="flex gap-10 flex-wrap">
+        <div class="mainContainer flex items-center flex-col flex-wrap gap-3 w-fit justify-center">
         <h1 class="font-bold">{{ venue.name }}</h1>
         <div class="flex justify-between gap-11">
             <img :src="venue.image" class="object-cover h-48 w-96 align-start">
@@ -112,10 +120,14 @@ let showModal = ref(false);
             </div>
         </div>
         <p>{{ venue.description }}</p>
-    </div>
-    <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
         Book Now
-    </button>
+        </button>
+        </div>
+        <div class="flex">
+            <FullCalendar :options="calendarOptions" />
+        </div>
+    </div>
     <Teleport to="body">
         <BookModal :show="showModal" :venue @close="showModal = false">
             <template #header>

@@ -46,6 +46,7 @@ defineProps({
     background: rgba(0, 0, 0, .4);
     display: grid;
     place-items: center;
+    z-index: 999;
 }
 
 .modal-container {
