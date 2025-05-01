@@ -37,5 +37,10 @@ class Bookings extends Model
         return $this->belongsTo(Venue::class, 'id');
      }
 
+     public function bookedProducts()
+     {
+        return $this->hasMany(BookingProducts::class, 'id');
+     }
+
 
 }

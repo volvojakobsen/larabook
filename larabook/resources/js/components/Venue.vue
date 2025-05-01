@@ -35,6 +35,8 @@ const venue = ref([]);
 const csrf = window.csrf_token;
 const BookedDates = ref([]);
 const products = ref([]);
+const totalPrice = 10;
+const addedProducts = ref([]);
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -73,6 +75,16 @@ const getProducts = () => {
 onMounted(() => {
   getVenue();
 });
+
+function addTotalPrice(addNumber) {
+totalPrice = totalPrice + addNumber;
+
+return totalPrice;
+}
+
+
+
+
 
 let showModal = ref(false);
 
@@ -126,13 +138,14 @@ let showModal = ref(false);
                                 <p>product id {{ product.id }}</p>
                             </div>
                             <div class="m-6">
-                                <input type="checkbox" :value="product.price" name="" id="">
+                                <input type="checkbox" :value="product.id" v-model="addedProducts"  name="" id="">
                             </div>
                         </div>
                     </div>
                     <input type="" name="venue_id" id="venue_id" :value="venue.id" />
                     <input type="" name="products" value="ingenting"  />
-                    <input type="" name="totalPrice" id="price" :value="venue.price"  />
+                    <input type="" name="totalPrice" id="price" :value="totalPrice"  />
+                    <input type="" name="productsAdded" id="" :value="addedProducts"  />
                     <!-- <h1>{{ dateValue.startDate.toISOString().split('T')[0] }}</h1> -->
                     
 
