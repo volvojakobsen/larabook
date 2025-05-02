@@ -40,10 +40,21 @@ const BookedDates = ref([]);
 const products = ref([]);
 const totalPrice = 10;
 const addedProducts = ref([]);
+const fullCalendar = ref([]);
 const calendarOptions = ref({
         plugins: [ dayGridPlugin, interactionPlugin ],
-        initialView: 'dayGridMonth'
-    });
+        initialView: 'dayGridMonth',
+        selectable: true,
+        
+});
+
+const handleDateSelect = (arg) => {
+    console.log(arg);
+}
+
+const selectInfo = {
+    start: ''
+}
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -91,7 +102,7 @@ return totalPrice;
 
 
 
-
+// const handleSelect = ref('');
 
 let showModal = ref(false);
 
@@ -124,8 +135,11 @@ let showModal = ref(false);
         Book Now
         </button>
         </div>
-        <div class="flex">
-            <FullCalendar :options="calendarOptions" />
+        <div class="flex flex-col">
+            <h1 class="text-center text-5xl m-4">Availability</h1>
+            <FullCalendar class="calendar" 
+            :options="calendarOptions"
+            />
         </div>
     </div>
     <Teleport to="body">
@@ -176,3 +190,10 @@ let showModal = ref(false);
         </BookModal>
     </Teleport>
 </template>
+
+<style>
+.calendar {
+    height: 35rem;
+    width: 30rem;
+}
+</style>
