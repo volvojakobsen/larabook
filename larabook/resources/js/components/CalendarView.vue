@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import axios from "axios";
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -31,7 +31,7 @@ const calendarOptions = ref({
     selectable: true,
 })
 
-const BookedDates = ref([]);
+const bookedDates = ref([]);
 
 function addToCalendar(dates) {
     var ocupiedDates = [];
@@ -48,7 +48,7 @@ function addToCalendar(dates) {
                 start: dates[i].dateFrom,
                 end: dates[i].dateTo, // exclusive end date, will show 7th and 8th
             })
-        console.log(ocupiedDates);
+        
     };
 
     console.log(dates);
@@ -57,9 +57,9 @@ function addToCalendar(dates) {
 
 const getBookedDates = () => {
     axios.get('/bookings/' + queryParams.get('id'))
-        .then(res => BookedDates.value = res.data)
-        // .then(console.log(BookedDates))
-        .then(addToCalendar(Array.from(BookedDates)))
+        .then(res => bookedDates.value = res.data)
+        .then(console.log(bookedDates))
+        // .then(addToCalendar(parseJSON(BookedDates)))
         .catch(error => console.log(error))
 }
 

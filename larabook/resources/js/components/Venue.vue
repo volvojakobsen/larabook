@@ -84,7 +84,7 @@ const getVenue = () => {
 const getProducts = () => {
     axios.get('/products/show/' + queryParams.get('userId'))
     .then(res => products.value =res.data)
-    .then(console.log(products))
+    // .then(console.log(products))
     .catch(error => console.log(error))
 }
 
