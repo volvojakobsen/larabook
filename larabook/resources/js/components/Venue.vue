@@ -4,9 +4,7 @@ import axios from "axios";
 import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import FullCalendar from '@fullcalendar/vue3';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import CalendarView from './CalendarView.vue'
 
 const date = ref();
 
@@ -41,20 +39,20 @@ const products = ref([]);
 const totalPrice = 10;
 const addedProducts = ref([]);
 const fullCalendar = ref([]);
-const calendarOptions = ref({
-        plugins: [ dayGridPlugin, interactionPlugin ],
-        initialView: 'dayGridMonth',
-        selectable: true,
+// const calendarOptions = ref({
+//         plugins: [ dayGridPlugin, interactionPlugin ],
+//         initialView: 'dayGridMonth',
+//         selectable: true,
         
-});
+// });
 
-const handleDateSelect = (arg) => {
-    console.log(arg);
-}
+// const handleDateSelect = (arg) => {
+//     console.log(arg);
+// }
 
-const selectInfo = {
-    start: ''
-}
+// const selectInfo = {
+//     start: ''
+// }
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -63,25 +61,25 @@ const queryParams = new URLSearchParams(url.search);
 const getVenue = () => {
     axios.get('/venueRequest/' + queryParams.get('id'))
         .then(res => venue.value = res.data)
-        .then(getBookedDates())
+        // .then(getBookedDates())
         .then(getProducts())
         // .then(dDate())
-        .then(console.log(BookedDates))
+        // .then(console.log(BookedDates))
         // .then(makeDatesThing())
         .catch(error => console.log(error))
 }
 
-const getCSRF = () => {
-    axios.get('/sanctum/csrf-cookie')
-    .then(res => csrf.value =res.data)
-    .catch(error => console.log(error))
-}
+// const getCSRF = () => {
+//     axios.get('/sanctum/csrf-cookie')
+//     .then(res => csrf.value =res.data)
+//     .catch(error => console.log(error))
+// }
 
-const getBookedDates = () => {
-    axios.get('/bookings/' + queryParams.get('id'))
-    .then(res => BookedDates.value =res.data)
-    .catch(error => console.log(error))
-}
+// const getBookedDates = () => {
+//     axios.get('/bookings/' + queryParams.get('id'))
+//     .then(res => BookedDates.value =res.data)
+//     .catch(error => console.log(error))
+// }
 
 const getProducts = () => {
     axios.get('/products/show/' + queryParams.get('userId'))
@@ -94,11 +92,11 @@ onMounted(() => {
   getVenue();
 });
 
-function addTotalPrice(addNumber) {
-totalPrice = totalPrice + addNumber;
+// function addTotalPrice(addNumber) {
+// totalPrice = totalPrice + addNumber;
 
-return totalPrice;
-}
+// return totalPrice;
+// }
 
 
 
@@ -137,9 +135,7 @@ let showModal = ref(false);
         </div>
         <div class="flex flex-col">
             <h1 class="text-center text-5xl m-4">Availability</h1>
-            <FullCalendar class="calendar" 
-            :options="calendarOptions"
-            />
+            <CalendarView class="calendar" />
         </div>
     </div>
     <Teleport to="body">
