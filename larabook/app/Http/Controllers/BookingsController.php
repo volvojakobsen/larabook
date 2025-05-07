@@ -10,7 +10,9 @@ class BookingsController extends Controller
 {
     public function index($id) 
     {
-        return  Bookings::where('venue_id', $id)->get()->toArray();
+        $bookings =  Bookings::where('venue_id', $id)->get()->toArray();
+
+        return response()->json($bookings);
     }
 
     public function create() 

@@ -143,7 +143,7 @@ let showModal = ref(false);
             <template #header>
                 <h1>book venue: {{ venue.name }}</h1>
             </template>
-
+            <!-- <input name="products[]" value="x"> -->
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
