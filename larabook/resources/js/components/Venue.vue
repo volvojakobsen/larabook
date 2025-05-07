@@ -4,19 +4,20 @@ import axios from "axios";
 import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import CalendarView from './CalendarView.vue'
+import CalendarView from './CalendarView.vue';
 
-const date = ref();
+axios.defaults.withCredentials = true;
+axios.defaults.withXsrftoken = true;
 
 const dateFrom = ref();
 const dateTo = ref();
 
 const onRangeStart = (value) => {
-  const day = value.getDate();
-  const month = value.getMonth() + 1;
-  const year = value.getFullYear();
-  const full = `${year}-${month}-${day}`;
-  dateFrom.value = full;
+    const day = value.getDate();
+    const month = value.getMonth() + 1;
+    const year = value.getFullYear();
+    const full = `${year}-${month}-${day}`;
+    dateFrom.value = full;
 }
 
 const onRangeEnd = (value) => {
@@ -28,22 +29,20 @@ const onRangeEnd = (value) => {
 }
 
 const handleDate = (modelData) => {
-  date.value = modelData;
-  // do something else with the data
+    date.value = modelData;
+    // do something else with the data
 }
 
 const venue = ref([]);
 const csrf = window.csrf_token;
-const BookedDates = ref([]);
+const addedProducts = ref([]);
 const products = ref([]);
 const totalPrice = 10;
-const addedProducts = ref([]);
-const fullCalendar = ref([]);
 // const calendarOptions = ref({
 //         plugins: [ dayGridPlugin, interactionPlugin ],
 //         initialView: 'dayGridMonth',
 //         selectable: true,
-        
+
 // });
 
 // const handleDateSelect = (arg) => {
@@ -83,13 +82,13 @@ const getVenue = () => {
 
 const getProducts = () => {
     axios.get('/products/show/' + queryParams.get('userId'))
-    .then(res => products.value =res.data)
-    // .then(console.log(products))
-    .catch(error => console.log(error))
+        .then(res => products.value = res.data)
+        // .then(console.log(products))
+        .catch(error => console.log(error))
 }
 
 onMounted(() => {
-  getVenue();
+    getVenue();
 });
 
 // function addTotalPrice(addNumber) {
@@ -107,31 +106,54 @@ let showModal = ref(false);
 // function makeDatesThing([BookedDates]) {
 // for (let i = 0; i < BookedDates.length; i++) {
 //     console.log("heyyya");
-    
+
 // }
+const id = ref();
+console.log(id);
 
-
-
+// redo formrequest to axios post request
+const bookVenue = async () => {
+    console.log('registering');
+    try {
+        const response = await axios.post('/bookings/store', {
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            venue_id: 1,
+            user_id: 1, // Ensure user_id is correct based on your controller
+            totalPrice: 500,
+            products: [1, 2], // Ensure 'products' is the correct field
+        }, {
+            headers: {
+                
+            }
+        });
+        console.log(response.data);  // Log successful response
+    } catch (error) {
+        // console.log(error.response);  // Log the entire error response
+        // console.error('Booking failed:', error.response?.data || error.message);  // Log error message
+    }
+};
 </script>
 
 <template>
     <div class="flex gap-10 flex-wrap">
         <div class="mainContainer flex items-center flex-col flex-wrap gap-3 w-fit justify-center">
-        <h1 class="font-bold">{{ venue.name }}</h1>
-        <div class="flex justify-between gap-11">
-            <img :src="venue.image" class="object-cover h-48 w-96 align-start">
-            <div class="">
-                <h3>{{ venue.address }}</h3>
-                <h4>{{ venue.city }}</h4>
-                <h4>{{ venue.postal }}</h4>
-                <h4>{{ venue.price }} NOK/day</h4>
-                <h4>{{ venue.user_id }}</h4>
+            <h1 class="font-bold">{{ venue.name }}</h1>
+            <div class="flex justify-between gap-11">
+                <img :src="venue.image" class="object-cover h-48 w-96 align-start">
+                <div class="">
+                    <h3>{{ venue.address }}</h3>
+                    <h4>{{ venue.city }}</h4>
+                    <h4>{{ venue.postal }}</h4>
+                    <h4>{{ venue.price }} NOK/day</h4>
+                    <h4>{{ venue.user_id }}</h4>
+                </div>
             </div>
-        </div>
-        <p>{{ venue.description }}</p>
-        <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-        Book Now
-        </button>
+            <p>{{ venue.description }}</p>
+            <button @click="showModal = true"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Book Now
+            </button>
         </div>
         <div class="flex flex-col">
             <h1 class="text-center text-5xl m-4">Availability</h1>
@@ -147,8 +169,10 @@ let showModal = ref(false);
             <template #default>
                 <form id="booking-form" action="/bookings/store" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
-                    <VueDatePicker v-model="date" :model-value="date" @update:model-value="handleDate" :teleport="true" :enable-time-picker="false" :min-date="new Date()" range @range-start="onRangeStart" @range-end="onRangeEnd" model-type="yyyy.MM.dd"></VueDatePicker>
-                    <input name="dateFrom" id="dateFrom" :value="dateFrom"/>
+                    <VueDatePicker v-model="date" :model-value="date" @update:model-value="handleDate" :teleport="true"
+                        :enable-time-picker="false" :min-date="new Date()" range @range-start="onRangeStart"
+                        @range-end="onRangeEnd" model-type="yyyy.MM.dd"></VueDatePicker>
+                    <input name="dateFrom" id="dateFrom" :value="dateFrom" />
                     <input name="dateTo" id="dateTo" :value="dateTo" />
                     <h3>Add Products and Services</h3>
                     <div v-for="product in products" class="border">
@@ -160,16 +184,16 @@ let showModal = ref(false);
                                 <p>product id {{ product.id }}</p>
                             </div>
                             <div class="m-6">
-                                <input type="checkbox" :value="product.id" v-model="addedProducts"  name="" id="">
+                                <input type="checkbox" :value="product.id" v-model="addedProducts" name="" id="">
                             </div>
                         </div>
                     </div>
-                    <input type="" name="venue_id" id="venue_id" :value="venue.id" />
-                    <input type="" name="products" value="ingenting"  />
-                    <input type="" name="totalPrice" id="price" :value="totalPrice"  />
-                    <input type="" name="productsAdded" id="" :value="addedProducts"  />
+                    <input type="" v-bind="id" name="venue_id" id="venue_id" :value="venue.id" />
+                    <input type="" name="products" value="ingenting" />
+                    <input type="" name="totalPrice" id="price" :value="totalPrice" />
+                    <input type="" name="productsAdded" id="" :value="addedProducts" />
                     <!-- <h1>{{ dateValue.startDate.toISOString().split('T')[0] }}</h1> -->
-                    
+
 
                 </form>
             </template>
@@ -177,10 +201,11 @@ let showModal = ref(false);
             <template #footer>
                 <div class="flex justify-between">
                     <button @click="showModal = false"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                            cancel
-                        </button>
-                <button form="booking-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Book</button>
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        cancel
+                    </button>
+                    <button @onClick="bookVenue"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Book</button>
                 </div>
             </template>
         </BookModal>

@@ -77,8 +77,8 @@ function addToCalendar(dates) {
         });
     }
 
-    console.log(dates);
-    console.log(events.value);
+    // console.log(dates);
+    // console.log(events.value);
     return events.value;
 }
 
@@ -98,12 +98,3 @@ onMounted(() => {
     <FullCalendar :options="calendarOptions" />
 </template>
 
-<style scoped>
-.fc-daygrid-event.unavailable-date {
-  background-color: rgba(255, 0, 0, 0.3) !important; /* light red */
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-
-</style>

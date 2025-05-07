@@ -39,7 +39,9 @@ class VenueController extends Controller
     public function findRequest($id)
     {
 
-        return Venue::findOrFail($id);
+        $venue = Venue::findOrFail($id)->toArray();
+
+        return response()->json($venue);
     }
 
     // store new venue

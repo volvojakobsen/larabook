@@ -23,7 +23,7 @@ class BookingsController extends Controller
     public function store(Request $request) 
     {
 
-        //dd($request);
+        dd($request);
         $bookingAttributes = $request->validate([
             // 'user_id' => ['required'],
             'venue_id' => ['required'],
