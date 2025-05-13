@@ -8,8 +8,11 @@ import interactionPlugin from '@fullcalendar/interaction'
 const url = new URL(window.location.href);
 const queryParams = new URLSearchParams(url.search);
 
+const emit = defineEmits(['select-range']); // 👈 define the emit
 
 let events = ref([]);
+
+
 
 
 const calendarOptions = ref({
@@ -17,22 +20,17 @@ const calendarOptions = ref({
     initialView: 'dayGridMonth',
     events: events,
     selectable: true,
-    // making the past dates unavailable
     validRange: {
         start: new Date().toISOString().split('T')[0]
     },
-    // taking the dates from event array and making them unavailable
     selectAllow(selectInfo) {
-        const startDateStr = selectInfo.startStr; // YYYY-MM-DD
-        const endDateStr = selectInfo.endStr;     // YYYY-MM-DD (exclusive)
+        const startDateStr = selectInfo.startStr;
+        const endDateStr = selectInfo.endStr;
 
         for (let event of events.value) {
-            const eventStartStr = event.start;
-            const eventEndStr = event.end;
-
             if (
-                startDateStr < eventEndStr && // overlap starts before event ends
-                endDateStr > eventStartStr    // overlap ends after event starts
+                startDateStr < event.end &&
+                endDateStr > event.start
             ) {
                 return false;
             }
@@ -40,25 +38,32 @@ const calendarOptions = ref({
 
         return true;
     },
-    // styles the unavailable dates and making them non selectable
-    eventDidMount: function(info) {
-    nextTick(() => {
-        if (info.event.title === 'Unavailable') {
-            const titleEl = info.el.querySelector('.fc-event-title');
-            const eventEl = info.el;  // Get the event element
-            if (titleEl) {
-                // Move the title down and center it
-                titleEl.style.position = 'absolute';
-                titleEl.style.top = '50%';
-                titleEl.style.transform = 'translateY(-50%)';
-                titleEl.style.left = '5px';
+    select: function(info) {
+        // 👇 Emit start and end dates to parent (end is exclusive, subtract 1 day)
+        const startDate = info.startStr;
+        const endDate = new Date(info.endStr);
+        endDate.setDate(endDate.getDate() - 1); // FullCalendar's end is exclusive
 
-                // Change background color dynamically
-                eventEl.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; // light red
+        emit('select-range', {
+            dateFrom: startDate,
+            dateTo: endDate.toISOString().split('T')[0]
+        });
+    },
+    eventDidMount(info) {
+        nextTick(() => {
+            if (info.event.title === 'Unavailable') {
+                const titleEl = info.el.querySelector('.fc-event-title');
+                const eventEl = info.el;
+                if (titleEl) {
+                    titleEl.style.position = 'absolute';
+                    titleEl.style.top = '50%';
+                    titleEl.style.transform = 'translateY(-50%)';
+                    titleEl.style.left = '5px';
+                    eventEl.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
+                }
             }
-        }
-    });
-}
+        });
+    }
 });
 
 

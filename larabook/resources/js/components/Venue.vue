@@ -1,16 +1,16 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import axios from "axios";
 import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import CalendarView from './CalendarView.vue';
 
-axios.defaults.withCredentials = true;
-axios.defaults.withXsrftoken = true;
 
-const dateFrom = ref();
-const dateTo = ref();
+
+const dateFrom = ref('');
+const dateTo = ref('');
+const date = ref();
 
 const onRangeStart = (value) => {
     const day = value.getDate();
@@ -37,7 +37,26 @@ const venue = ref([]);
 const csrf = window.csrf_token;
 const addedProducts = ref([]);
 const products = ref([]);
-const totalPrice = 10;
+
+const bookingDays = computed(() => {
+  if (!dateFrom.value || !dateTo.value) return 0;
+  const start = new Date(dateFrom.value);
+  const end = new Date(dateTo.value);
+  const diffTime = end - start;
+  const dayCount = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return dayCount + 1; // ✅ Include the end date
+});
+
+const totalPrice = computed(() => {
+  const productTotal = products.value
+    .filter(product => addedProducts.value.includes(product.id))
+    .reduce((sum, product) => sum + parseFloat(product.price), 0);
+
+  const venueDaily = parseFloat(venue.value.price || 0);
+  return (venueDaily * bookingDays.value) + productTotal;
+});
+
 // const calendarOptions = ref({
 //         plugins: [ dayGridPlugin, interactionPlugin ],
 //         initialView: 'dayGridMonth',
@@ -111,27 +130,32 @@ let showModal = ref(false);
 const id = ref();
 console.log(id);
 
+const handleCalendarRangeSelect = ({ dateFrom: from, dateTo: to }) => {
+  dateFrom.value = from;
+  dateTo.value = to;
+  showModal.value = true;
+};
+
 // redo formrequest to axios post request
 const bookVenue = async () => {
     console.log('registering');
     try {
         const response = await axios.post('/bookings/store', {
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            venue_id: 1,
-            user_id: 1, // Ensure user_id is correct based on your controller
-            totalPrice: 500,
-            products: [1, 2], // Ensure 'products' is the correct field
+            dateFrom: dateFrom.value,
+            dateTo: dateTo.value,
+            venue_id: venue.value.id,
+            totalPrice: totalPrice.value,
+            products: addedProducts.value, // Ensure 'products' is the correct field
         }, {
             headers: {
-                
             }
         });
         console.log(response.data);  // Log successful response
     } catch (error) {
-        // console.log(error.response);  // Log the entire error response
-        // console.error('Booking failed:', error.response?.data || error.message);  // Log error message
+        console.error('Caught error:', error);
     }
+
+
 };
 </script>
 
@@ -157,7 +181,7 @@ const bookVenue = async () => {
         </div>
         <div class="flex flex-col">
             <h1 class="text-center text-5xl m-4">Availability</h1>
-            <CalendarView class="calendar" />
+            <CalendarView class="calendar" @select-range="handleCalendarRangeSelect" />
         </div>
     </div>
     <Teleport to="body">
@@ -192,6 +216,7 @@ const bookVenue = async () => {
                     <input type="" name="products" value="ingenting" />
                     <input type="" name="totalPrice" id="price" :value="totalPrice" />
                     <input type="" name="productsAdded" id="" :value="addedProducts" />
+                    <h3>Total Selected Product Price: NOK {{ totalPrice }}</h3>
                     <!-- <h1>{{ dateValue.startDate.toISOString().split('T')[0] }}</h1> -->
 
 
@@ -204,7 +229,7 @@ const bookVenue = async () => {
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                         cancel
                     </button>
-                    <button @onClick="bookVenue"
+                    <button @click="bookVenue"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Book</button>
                 </div>
             </template>
