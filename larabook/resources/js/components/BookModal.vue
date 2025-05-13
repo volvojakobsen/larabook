@@ -6,33 +6,30 @@ defineProps({
 </script>
 
 <template>
-    <Transition
-    enter-from-class="opacity-0 scale-125"
-    enter-to-class="opacity-100"
-    enter-active-class="transition duration-300"
-    leave-active-class="transition duration-500"
-    leave-from-class="opacity-100"
-    leave-to-class="opacity-0 scale-150"
-    >
+    <Transition enter-from-class="opacity-0 scale-125" enter-to-class="opacity-100"
+        enter-active-class="transition duration-300" leave-active-class="transition duration-500"
+        leave-from-class="opacity-100" leave-to-class="opacity-0 scale-150">
         <div v-if="show" class="modal-mask" @click="$emit('close')">
 
             <div class="modal-container" @click.stop>
-                <header>
-                    <slot name="header">default header</slot>
-                </header>
+                <div class="max-h-[80vh] overflow-y-auto p-6">
+                    <header>
+                        <slot name="header">default header</slot>
+                    </header>
 
-                <div>
-                    <slot>default body</slot>
+                    <div>
+                        <slot>default body</slot>
+                    </div>
+
+                    <footer class="footer">
+                        <slot name="footer">
+                            <button @click="$emit('close')"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                cancel
+                            </button>
+                        </slot>
+                    </footer>
                 </div>
-
-                <footer class="footer">
-                    <slot name="footer">
-                        <button @click="$emit('close')"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                            cancel
-                        </button>
-                    </slot>
-                </footer>
             </div>
 
         </div>
