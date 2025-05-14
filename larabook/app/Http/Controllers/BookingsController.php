@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BookingProducts;
+use App\Models\Product;
 use App\Models\Bookings;
 use Illuminate\Http\Request;
+use App\Models\BookingProducts;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class BookingsController extends Controller
@@ -53,4 +55,33 @@ class BookingsController extends Controller
 
     return redirect('/');
 }
+
+public function myBookings() {
+    return view('/myBookings.index');
+}
+
+public function getUsersBookings()
+{
+    $userId = Auth::id(); // Get currently logged-in user's ID
+
+    // Fetch bookings for this user
+    $bookings = Bookings::where('user_id', $userId)->get();
+
+    return response()->json($bookings);
+}
+
+public function getUsersBookingProducts($bookingId)
+{
+    // Step 1: Get product IDs from the pivot table
+    $productIds = BookingProducts::
+        where('bookings_id', $bookingId)
+        ->pluck('product_id');
+
+    // Step 2: Fetch the products by their IDs
+    $products = Product::whereIn('id', $productIds)->get();
+
+    // Step 3: Return the products (as JSON if it's for an API)
+    return response()->json($products);
+}
+
 }

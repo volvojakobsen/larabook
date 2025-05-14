@@ -934,6 +934,9 @@
                         @if (Auth::check() && Auth::user()->isVenueAdmin)
                         <x-nav-link href="/myVenues/index">My venues</x-nav-link>
                         @endif
+                        @if (Auth::check())
+                        <x-nav-link href="/myBookings/index">My Bookings</x-nav-link>
+                        @endif
                     </div>
                 </div>
             </div>
