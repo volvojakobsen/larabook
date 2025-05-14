@@ -1011,6 +1011,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- About -->
             <div>
+                <img src="{{ asset('images/larabook-logo.png') }}" alt="Larabook Logo" class="h-10 mb-3">
                 <h2 class="text-lg font-semibold mb-3">About Larabook</h2>
                 <p class="text-sm text-gray-300">
                     Larabook is your go-to platform for booking venues and services with ease. Built with Laravel and Vue 3.
