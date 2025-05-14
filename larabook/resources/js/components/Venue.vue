@@ -5,6 +5,7 @@ import BookModal from './BookModal.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import CalendarView from './CalendarView.vue';
+import { toast } from 'vue3-toastify'
 
 
 
@@ -148,11 +149,38 @@ const bookVenue = async () => {
             products: addedProducts.value, // Ensure 'products' is the correct field
         }, {
             headers: {
+                'Content-Type': 'application/json',
             }
         });
-        console.log(response.data);  // Log successful response
+        console.log(response.data);
+        toast.success('Booking successful! Redirecting...', {
+            autoClose: 2000, // Toast disappears in 2s
+            onClose: () => {
+                window.location.href = '/'; // ✅ Laravel route
+            }
+        });
     } catch (error) {
-        console.error('Caught error:', error);
+        // Laravel validation error (status code 422)
+        if (error.response?.status === 422) {
+            const errors = error.response.data.errors;
+            if (errors) {
+                // Show the first error message found
+                const firstError = Object.values(errors)[0][0];
+                toast.error(firstError);
+            } else {
+                toast.error('Validation failed. Please check your input.');
+            }
+
+            // Other known Laravel error response
+        } else if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+
+            // Network/server error
+        } else {
+            toast.error('Something went wrong. Please try again.');
+        }
+
+        console.error('Booking error:', error);
     }
 
 
@@ -161,57 +189,56 @@ const bookVenue = async () => {
 
 <template>
     <div class="flex flex-col lg:flex-row gap-10 p-4 max-w-7xl mx-auto">
-  <!-- Venue Info Section -->
-  <div class="flex-1 space-y-6">
-    <!-- Venue Name -->
-    <h1 class="text-3xl font-bold text-gray-800">{{ venue.name }}</h1>
+        <!-- Venue Info Section -->
+        <div class="flex-1 space-y-6">
+            <!-- Venue Name -->
+            <h1 class="text-3xl font-bold text-gray-800">{{ venue.name }}</h1>
 
-    <!-- Image & Address Block -->
-    <div class="flex flex-col sm:flex-row gap-6">
-      <!-- Venue Image -->
-      <img
-        :src="venue.image"
-        alt="Venue Image"
-        class="object-cover w-full sm:w-80 h-48 rounded shadow-md"
-      />
+            <!-- Image & Address Block -->
+            <div class="flex flex-col sm:flex-row gap-6">
+                <!-- Venue Image -->
+                <img :src="venue.image" alt="Venue Image" class="object-cover w-full sm:w-80 h-48 rounded shadow-md" />
 
-      <!-- Address Info -->
-      <div class="text-gray-700 space-y-1">
-        <p class="text-lg font-semibold">{{ venue.address }}</p>
-        <p>{{ venue.city }}, {{ venue.postal }}</p>
-        <p class="text-blue-600 font-medium">NOK {{ venue.price }} / day</p>
-        <p class="text-sm text-gray-400">Owner ID: {{ venue.user_id }}</p>
-      </div>
+                <!-- Address Info -->
+                <div class="text-gray-700 space-y-1">
+                    <p class="text-lg font-semibold">{{ venue.address }}</p>
+                    <p>{{ venue.city }}, {{ venue.postal }}</p>
+                    <p class="text-blue-600 font-medium">NOK {{ venue.price }} / day</p>
+                    <p class="text-sm text-gray-400">Owner ID: {{ venue.user_id }}</p>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-gray-600">{{ venue.description }}</p>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="flex-1 flex flex-col items-center">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 text-center">Availability</h2>
+            <div class="bg-white rounded shadow p-4 w-full max-w-[32rem]">
+                <CalendarView class="calendar" @select-range="handleCalendarRangeSelect" />
+            </div>
+        </div>
     </div>
 
-    <!-- Description -->
-    <p class="text-gray-600">{{ venue.description }}</p>
-  </div>
-
-  <!-- Calendar Section -->
-  <div class="flex-1 flex flex-col items-center">
-    <h2 class="text-2xl font-semibold mb-4 text-gray-800 text-center">Availability</h2>
-    <div class="bg-white rounded shadow p-4 w-full max-w-[32rem]">
-      <CalendarView class="calendar" @select-range="handleCalendarRangeSelect" />
+    <!-- Book Button (Full Width Section Below Content) -->
+    <div class="w-full flex justify-center mt-8">
+        <button @click="showModal = true"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition">
+            Book Now
+        </button>
     </div>
-  </div>
-</div>
-
-<!-- Book Button (Full Width Section Below Content) -->
-<div class="w-full flex justify-center mt-8">
-  <button
-    @click="showModal = true"
-    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition"
-  >
-    Book Now
-  </button>
-</div>
     <Teleport to="body">
         <div class="p-6 max-w-2xl mx-auto">
             <BookModal :show="showModal" :venue @close="showModal = false">
                 <!-- Modal Header -->
                 <template #header>
                     <h1 class="text-2xl font-bold text-gray-800">Book venue: {{ venue.name }}</h1>
+                    <p v-if="!dateFrom || !dateTo"
+                        class="mt-1 text-sm text-yellow-700 bg-yellow-100 border-l-4 border-yellow-500 p-2 rounded">
+                        📅 Please click and drag on the calendar to select a start and end date.
+                    </p>
+
                 </template>
 
                 <!-- Modal Body -->
@@ -221,12 +248,6 @@ const bookVenue = async () => {
 
                         <!-- Hidden Fields -->
                         <input type="hidden" name="_token" :value="csrf" />
-                        <input type="hidden" name="dateFrom" :value="dateFrom" />
-                        <input type="hidden" name="dateTo" :value="dateTo" />
-                        <input type="hidden" name="venue_id" :value="venue.id" />
-                        <input type="hidden" name="totalPrice" :value="totalPrice" />
-                        <input type="hidden" name="productsAdded" :value="addedProducts" />
-
                         <!-- Summary Section -->
                         <div class="bg-gray-100 p-4 rounded">
                             <p class="text-lg font-semibold text-gray-700">Selected Dates:</p>

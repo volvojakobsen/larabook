@@ -1003,6 +1003,40 @@
                 {{ $slot }}
             </div>
         </main>
+        <footer class="bg-gray-800 text-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- About -->
+            <div>
+                <h2 class="text-lg font-semibold mb-3">About Larabook</h2>
+                <p class="text-sm text-gray-300">
+                    Larabook is your go-to platform for booking venues and services with ease. Built with Laravel and Vue 3.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h2 class="text-lg font-semibold mb-3">Quick Links</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="/" class="hover:underline text-gray-300">Home</a></li>
+                    <li><a href="/profile" class="hover:underline text-gray-300">Profile</a></li>
+                    <li><a href="/myVenues/index" class="hover:underline text-gray-300">My Venues</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h2 class="text-lg font-semibold mb-3">Contact</h2>
+                <p class="text-sm text-gray-300">Email: support@larabook.test</p>
+                <p class="text-sm text-gray-300">Phone: +47 123 456 78</p>
+            </div>
+        </div>
+
+        <div class="mt-8 border-t border-gray-700 pt-6 text-sm text-center text-gray-400">
+            &copy; {{ date('Y') }} Larabook. All rights reserved.
+        </div>
+    </div>
+</footer>
     </div>
 
 </body>

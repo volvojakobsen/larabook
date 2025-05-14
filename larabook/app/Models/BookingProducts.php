@@ -9,7 +9,7 @@ class BookingProducts extends Model
     protected $table = 'booking_products';
 
     protected $fillable = [
-        'booking_id',
+        'bookings_id',
         'product_id',
     ];
 

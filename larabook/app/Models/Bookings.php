@@ -8,6 +8,10 @@ class Bookings extends Model
 {
     protected $table = 'bookings';
 
+    protected $casts = [
+        'products' => 'array',
+    ];
+
     protected $fillable = [
         'user_id',
         'venue_id',
