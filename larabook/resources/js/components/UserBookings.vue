@@ -5,12 +5,22 @@ import axios from 'axios'
 const bookings = ref([])
 const loading = ref(true)
 
+// Format date like "22 April 2025"
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date)
+}
+
 onMounted(async () => {
   try {
     const response = await axios.get('/myBookings/getUsersBookings')
     const fetchedBookings = response.data
 
-    // Fetch both products and venue for each booking
     const bookingsWithDetails = await Promise.all(
       fetchedBookings.map(async (booking) => {
         let products = []
@@ -47,8 +57,6 @@ onMounted(async () => {
 })
 </script>
 
-
-
 <template>
   <div>
     <div v-if="loading" class="text-gray-600">Loading bookings...</div>
@@ -60,10 +68,10 @@ onMounted(async () => {
         :key="booking.id"
         class="w-full sm:w-[48%] md:w-[31%] lg:w-[23%] border border-gray-200 rounded-lg shadow-sm p-3 bg-white"
       >
-        <h3 class="text-lg font-bold text-gray-800 mb-1">#{{ booking.id }}</h3>
+        <h3 class="text-lg font-bold text-gray-800 mb-1">#{{ booking.venueTitle }}</h3>
         <p class="text-sm text-gray-600"><span class="font-medium">Venue:</span> {{ booking.venueTitle }}</p>
-        <p class="text-sm text-gray-600">{{ booking.dateFrom }} → {{ booking.dateTo }}</p>
-        <p class="text-sm text-green-700 font-semibold mt-1">NOK {{ booking.totalPrice }}</p>
+        <p class="text-sm text-gray-600">{{ formatDate(booking.dateFrom) }} → {{ formatDate(booking.dateTo) }}</p>
+        <p class="text-sm text-green-700 font-semibold mt-1">Total NOK {{ booking.totalPrice }}</p>
 
         <div v-if="booking.products.length" class="mt-3 border-t pt-2">
           <p class="text-sm font-semibold text-gray-700 mb-1">Products:</p>

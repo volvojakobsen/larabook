@@ -156,7 +156,7 @@ const bookVenue = async () => {
         toast.success('Booking successful! Redirecting...', {
             autoClose: 2000, // Toast disappears in 2s
             onClose: () => {
-                window.location.href = '/'; // ✅ Laravel route
+                window.location.href = '/myBookings/index'; // ✅ Laravel route
             }
         });
     } catch (error) {
