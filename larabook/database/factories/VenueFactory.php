@@ -24,7 +24,7 @@ class VenueFactory extends Factory
             'city' => fake()->city(),
             'postal' => '8400',
             'price' => fake()->numberBetween($int1 = 100, $int2 = 1000000),
-            'image' => fake()->imageUrl(),
+            'image' => 'venueImages/5NMGT96KYsvDYE23j8hbGJxwLSaogBfmad2VKiOX.jpg',
             'description' => fake()->paragraph($nbSentences = 2),
         ];
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="en" class="h-full bg-gray-50">
 
 <head>
     <meta charset="UTF-8">
@@ -907,7 +907,7 @@
     @endif
 </head>
 
-<body id="app" class="h-full">
+<body id="app" class="h-full flex flex-col text-gray-900">
     <!--
   This example requires updating your template:
 
@@ -916,34 +916,70 @@
   <body class="h-full">
   ```
 -->
-    <div class="min-h-full">
-    <nav class="bg-gray-800">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
-            <!-- Left side -->
-            <div class="flex items-center">
-                <div class="shrink-0 flex items-center gap-2 text-white text-lg font-semibold">
-                    <img src="{{ asset('images/larabook-logo.png') }}" alt="Larabook Logo" class="h-8 w-auto">
-                    <span class="hidden sm:inline">Larabook</span>
-                </div>
-                <!-- Desktop Nav -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
+    <div class="flex flex-col flex-1">
+        <nav class="bg-gray-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <!-- Left side -->
+                    <div class="flex items-center">
+                        <div class="shrink-0 flex items-center gap-2 text-white text-lg font-semibold">
+                            <img src="{{ asset('images/larabook-logo.png') }}" alt="Larabook Logo" class="h-8 w-auto">
+                            <span class="hidden sm:inline">Larabook</span>
+                        </div>
+                        <!-- Desktop Nav -->
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
 
-                        @if (Auth::check() && Auth::user()->isVenueAdmin)
-                        <x-nav-link href="/myVenues/index">My venues</x-nav-link>
-                        @endif
-                        @if (Auth::check())
-                        <x-nav-link href="/myBookings/index">My Bookings</x-nav-link>
-                        @endif
+                                @if (Auth::check() && Auth::user()->isVenueAdmin)
+                                <x-nav-link href="/myVenues/index">My venues</x-nav-link>
+                                @endif
+                                @if (Auth::check())
+                                <x-nav-link href="/myBookings/index">My Bookings</x-nav-link>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            @guest
+                            <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
+                            <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
+                            @endguest
+
+                            @auth
+                            <x-nav-link href="/profile" :active="request()->is('profile')">Profile</x-nav-link>
+                            <form method="POST" action="/logout" class="ml-2">
+                                @csrf
+                                <x-logoutButton>Log Out</x-logoutButton>
+                            </form>
+                            @endauth
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="-mr-2 flex md:hidden">
+                        <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Right side -->
-            <div class="hidden md:block">
-                <div class="ml-4 flex items-center md:ml-6">
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+                    <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
+
+                    @if (Auth::check() && Auth::user()->isVenueAdmin)
+                    <x-nav-link href="/myVenues/index">My venues</x-nav-link>
+                    @endif
+
                     @guest
                     <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
                     <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
@@ -951,98 +987,69 @@
 
                     @auth
                     <x-nav-link href="/profile" :active="request()->is('profile')">Profile</x-nav-link>
-                    <form method="POST" action="/logout" class="ml-2">
+                    <form method="POST" action="/logout" class="px-3 py-1">
                         @csrf
                         <x-logoutButton>Log Out</x-logoutButton>
                     </form>
                     @endauth
                 </div>
             </div>
-
-            <!-- Mobile Menu Button -->
-            <div class="-mr-2 flex md:hidden">
-                <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div class="md:hidden hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-            <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-
-            @if (Auth::check() && Auth::user()->isVenueAdmin)
-            <x-nav-link href="/myVenues/index">My venues</x-nav-link>
-            @endif
-
-            @guest
-            <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
-            <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
-            @endguest
-
-            @auth
-            <x-nav-link href="/profile" :active="request()->is('profile')">Profile</x-nav-link>
-            <form method="POST" action="/logout" class="px-3 py-1">
-                @csrf
-                <x-logoutButton>Log Out</x-logoutButton>
-            </form>
-            @endauth
-        </div>
-    </div>
-</nav>
+        </nav>
 
         <header class="bg-white shadow">
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 flex items-center justify-between">{{ $heading }}</h1>
             </div>
         </header>
-        <main>
+        <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 {{ $slot }}
             </div>
         </main>
         <footer class="bg-gray-800 text-white mt-12">
-    <div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- About -->
-            <div>
-                <img src="{{ asset('images/larabook-logo.png') }}" alt="Larabook Logo" class="h-10 mb-3">
-                <h2 class="text-lg font-semibold mb-3">About Larabook</h2>
-                <p class="text-sm text-gray-300">
-                    Larabook is your go-to platform for booking venues and services with ease. Built with Laravel and Vue 3.
-                </p>
-            </div>
+            <div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- About -->
+                    <div>
+                        <img src="{{ asset('images/larabook-logo.png') }}" alt="Larabook Logo" class="h-10 mb-3">
+                        <h2 class="text-lg font-semibold mb-3">About Larabook</h2>
+                        <p class="text-sm text-gray-300">
+                            Larabook is your go-to platform for booking venues and services with ease. Built with Laravel and Vue 3.
+                        </p>
+                    </div>
 
-            <!-- Quick Links -->
-            <div>
-                <h2 class="text-lg font-semibold mb-3">Quick Links</h2>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="/" class="hover:underline text-gray-300">Home</a></li>
-                    <li><a href="/profile" class="hover:underline text-gray-300">Profile</a></li>
-                    <li><a href="/myVenues/index" class="hover:underline text-gray-300">My Venues</a></li>
-                </ul>
-            </div>
+                    <!-- Quick Links -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-3">Quick Links</h2>
+                        <ul class="space-y-2 text-sm">
+                            <li><x-nav-link href="/" class="hover:underline text-gray-300">Home</x-nav-link></li>
+                            @if (Auth::check() && Auth::user()->isVenueAdmin)
+                            <li><x-nav-link href="/myVenues/index">My venues</x-nav-link></li>
+                            @endif
+                            @if (Auth::check())
+                            <li><x-nav-link href="/myBookings/index">My Bookings</x-nav-link></li>
+                            @endif
+                            @guest
+                            <li><x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link></li>
+                            <li><x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link></li>
+                            @endguest
+                        </ul>
+                    </div>
 
-            <!-- Contact -->
-            <div>
-                <h2 class="text-lg font-semibold mb-3">Contact</h2>
-                <p class="text-sm text-gray-300">Email: support@larabook.test</p>
-                <p class="text-sm text-gray-300">Phone: +47 123 456 78</p>
-            </div>
-        </div>
+                    <!-- Contact -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-3">Contact</h2>
+                        <p class="text-sm text-gray-300">Email: support@larabook.test</p>
+                        <p class="text-sm text-gray-300">Phone: +47 123 456 78</p>
+                    </div>
+                </div>
 
-        <div class="mt-8 border-t border-gray-700 pt-6 text-sm text-center text-gray-400">
-            &copy; {{ date('Y') }} Larabook. All rights reserved.
-        </div>
+                <div class="mt-8 border-t border-gray-700 pt-6 text-sm text-center text-gray-400">
+                    &copy; {{ date('Y') }} Larabook. All rights reserved.
+                </div>
+            </div>
     </div>
-</footer>
-    </div>
-
+    </footer>
 </body>
 
 </html>

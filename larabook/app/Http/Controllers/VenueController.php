@@ -14,7 +14,7 @@ class VenueController extends Controller
     //home
     public function index()
     {
-        return  Venue::paginate(2);         
+        return  Venue::paginate(12);         
     }
 
     public function getUsersVenues()
