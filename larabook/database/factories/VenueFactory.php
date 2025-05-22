@@ -17,13 +17,14 @@ class VenueFactory extends Factory
      */
     public function definition(): array
     {
+        $prices = ['420', '1000', '240', '300', '1500', '100', '20', '10', '1999', '1'];
         return [
             'user_id' => User::factory(),
             'name' => fake()->company(),
             'address' => fake()->address(),
             'city' => fake()->city(),
             'postal' => '8400',
-            'price' => fake()->numberBetween($int1 = 100, $int2 = 1000000),
+            'price' => fake()->randomElement($prices),
             'image' => 'venueImages/5NMGT96KYsvDYE23j8hbGJxwLSaogBfmad2VKiOX.jpg',
             'description' => fake()->paragraph($nbSentences = 2),
         ];

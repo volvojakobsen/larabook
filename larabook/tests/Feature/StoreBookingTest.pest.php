@@ -38,3 +38,28 @@ it('stores a booking and its products', function () {
         ]);
     }
 });
+
+it('fails to store booking if dateFrom is after dateTo', function () {
+    $user = User::factory()->create();
+    $venue = Venue::factory()->create();
+    $products = Product::factory()->count(2)->create();
+
+    $this->actingAs($user);
+
+    $response = $this->from('/venue')->post('/bookings/store', [
+        'venue_id' => $venue->id,
+        'dateFrom' => '2025-06-05', // 👈 after dateTo
+        'dateTo' => '2025-06-01',
+        'products' => $products->pluck('id')->toArray(),
+        'totalPrice' => 100,
+    ]);
+
+    $response
+        ->assertRedirect('/venue') // 👈 wherever you redirect on validation failure
+        ->assertSessionHasErrors(['dateTo']); // 👈 expect validation error for dateTo
+
+    $this->assertDatabaseMissing('bookings', [
+        'user_id' => $user->id,
+        'venue_id' => $venue->id,
+    ]);
+});
