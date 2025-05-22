@@ -8,7 +8,9 @@ import interactionPlugin from '@fullcalendar/interaction'
 const url = new URL(window.location.href);
 const queryParams = new URLSearchParams(url.search);
 
-const user = window.App.user;
+const el = document.getElementById('app');
+const userJson = el?.dataset.user;
+const user = userJson ? JSON.parse(userJson) : null;
 const isLoggedIn = !!user;
 
 const emit = defineEmits(['select-range']); // 👈 define the emit

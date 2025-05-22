@@ -13,7 +13,9 @@ const dateFrom = ref('');
 const dateTo = ref('');
 const date = ref();
 
-const user = window.App.user;
+const el = document.getElementById('app');
+const userJson = el?.dataset.user;
+const user = userJson ? JSON.parse(userJson) : null;
 const isLoggedIn = !!user;
 
 

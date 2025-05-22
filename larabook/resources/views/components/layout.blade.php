@@ -907,12 +907,7 @@
     @endif
 </head>
 
-<body id="app" class="h-full flex flex-col text-gray-900">
-<script>
-    window.App = {
-        user: @json(auth()->user())
-    };
-</script>
+<body id="app" data-user="{{ auth()->check() ? auth()->user()->toJson() : '' }}" class="h-full flex flex-col text-gray-900">
     <!--
   This example requires updating your template:
 
