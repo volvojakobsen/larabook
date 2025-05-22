@@ -19,7 +19,7 @@ class VenueFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->title(),
+            'name' => fake()->company(),
             'address' => fake()->address(),
             'city' => fake()->city(),
             'postal' => '8400',

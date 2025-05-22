@@ -1,19 +1,27 @@
 <x-layout>
     <x-slot:heading>
-        My Venues & products 
+        My Venues & products
         <div>
             <a href="/venue/create">
-            <x-add-button>Add venue</x-add-button>
+                <x-add-button>Add venue</x-add-button>
             </a>
             <a href="/products/create">
-            <x-add-button >Add Product</x-add-button>
+                <x-add-button>Add Product</x-add-button>
             </a>
         </div>
     </x-slot:heading>
-    <h3 class="text-center m-6">Venues</h3>
-    <div>
-    <My-Venues><My-Venues />
+    <div class="text-center my-10">
+        <h3 class="text-4xl font-bold text-gray-800">Venues</h3>
+        <div class="mt-2 h-1 w-16 bg-blue-500 mx-auto rounded-full"></div>
     </div>
-    <h3 class="text-center m-6">Products</h3>
+
+    <div>
+        <My-Venues><My-Venues />
+    </div>
+    <div class="text-center my-10">
+        <h3 class="text-4xl font-bold text-gray-800">Products</h3>
+        <div class="mt-2 h-1 w-16 bg-blue-500 mx-auto rounded-full"></div>
+    </div>
+
     <List-Products />
 </x-layout>
