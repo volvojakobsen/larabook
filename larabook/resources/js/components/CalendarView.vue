@@ -8,6 +8,9 @@ import interactionPlugin from '@fullcalendar/interaction'
 const url = new URL(window.location.href);
 const queryParams = new URLSearchParams(url.search);
 
+const user = window.App.user;
+const isLoggedIn = !!user;
+
 const emit = defineEmits(['select-range']); // 👈 define the emit
 
 let events = ref([]);
@@ -39,6 +42,9 @@ const calendarOptions = ref({
         return true;
     },
     select: function(info) {
+        if (!isLoggedIn) {
+        return; // 🚫 Don't emit anything if user isn't logged in
+    }
         // 👇 Emit start and end dates to parent (end is exclusive, subtract 1 day)
         const startDate = info.startStr;
         const endDate = new Date(info.endStr);

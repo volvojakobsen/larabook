@@ -30,7 +30,7 @@ class BookingsController extends Controller
         'venue_id' => ['required', 'integer'],
         'dateFrom' => ['required', 'date'],
         'dateTo' => ['required', 'date', 'after_or_equal:dateFrom'],
-        'products' => ['required', 'array'],
+        'products' => ['array'],
         'products.*' => ['integer'],
         'totalPrice' => ['required', 'numeric'],
     ]);

@@ -908,6 +908,11 @@
 </head>
 
 <body id="app" class="h-full flex flex-col text-gray-900">
+<script>
+    window.App = {
+        user: @json(auth()->user())
+    };
+</script>
     <!--
   This example requires updating your template:
 

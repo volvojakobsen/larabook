@@ -13,6 +13,10 @@ const dateFrom = ref('');
 const dateTo = ref('');
 const date = ref();
 
+const user = window.App.user;
+const isLoggedIn = !!user;
+
+
 const onRangeStart = (value) => {
     const day = value.getDate();
     const month = value.getMonth() + 1;
@@ -224,6 +228,7 @@ const bookVenue = async () => {
     <!-- Book Button (Full Width Section Below Content) -->
     <div class="w-full flex justify-center mt-8">
         <button @click="showModal = true"
+            v-if="isLoggedIn"
             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition">
             Book Now
         </button>
