@@ -2,7 +2,6 @@
 import { onMounted, ref, computed } from 'vue';
 import axios from "axios";
 import BookModal from './BookModal.vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import CalendarView from './CalendarView.vue';
 import { toast } from 'vue3-toastify'
@@ -17,28 +16,6 @@ const el = document.getElementById('app');
 const userJson = el?.dataset.user;
 const user = userJson ? JSON.parse(userJson) : null;
 const isLoggedIn = !!user;
-
-
-const onRangeStart = (value) => {
-    const day = value.getDate();
-    const month = value.getMonth() + 1;
-    const year = value.getFullYear();
-    const full = `${year}-${month}-${day}`;
-    dateFrom.value = full;
-}
-
-const onRangeEnd = (value) => {
-    const day = value.getDate();
-    const month = value.getMonth() + 1;
-    const year = value.getFullYear();
-    const full = `${year}-${month}-${day}`;
-    dateTo.value = full;
-}
-
-const handleDate = (modelData) => {
-    date.value = modelData;
-    // do something else with the data
-}
 
 const venue = ref([]);
 const csrf = window.csrf_token;
@@ -64,20 +41,6 @@ const totalPrice = computed(() => {
     return (venueDaily * bookingDays.value) + productTotal;
 });
 
-// const calendarOptions = ref({
-//         plugins: [ dayGridPlugin, interactionPlugin ],
-//         initialView: 'dayGridMonth',
-//         selectable: true,
-
-// });
-
-// const handleDateSelect = (arg) => {
-//     console.log(arg);
-// }
-
-// const selectInfo = {
-//     start: ''
-// }
 
 // console.log(BookedDates);
 const url = new URL(window.location.href);
@@ -94,17 +57,6 @@ const getVenue = () => {
         .catch(error => console.log(error))
 }
 
-// const getCSRF = () => {
-//     axios.get('/sanctum/csrf-cookie')
-//     .then(res => csrf.value =res.data)
-//     .catch(error => console.log(error))
-// }
-
-// const getBookedDates = () => {
-//     axios.get('/bookings/' + queryParams.get('id'))
-//     .then(res => BookedDates.value =res.data)
-//     .catch(error => console.log(error))
-// }
 
 const getProducts = () => {
     axios.get('/products/show/' + queryParams.get('userId'))
@@ -117,25 +69,11 @@ onMounted(() => {
     getVenue();
 });
 
-// function addTotalPrice(addNumber) {
-// totalPrice = totalPrice + addNumber;
-
-// return totalPrice;
-// }
-
-
-
-// const handleSelect = ref('');
 
 let showModal = ref(false);
 
-// function makeDatesThing([BookedDates]) {
-// for (let i = 0; i < BookedDates.length; i++) {
-//     console.log("heyyya");
 
-// }
-const id = ref();
-console.log(id);
+
 
 const handleCalendarRangeSelect = ({ dateFrom: from, dateTo: to }) => {
     dateFrom.value = from;
