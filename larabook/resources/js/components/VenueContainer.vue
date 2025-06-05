@@ -33,7 +33,7 @@ onMounted(() => getVenues());
 </script>
 
 <template>
-  <div class="flex justify-between items-center mb-4 px-2">
+  <div class="flex justify-between flex-wrap gap-2 items-center mb-4 px-2">
   <!-- Search input -->
   <input
     v-model="search"
@@ -45,13 +45,13 @@ onMounted(() => getVenues());
 
   <!-- Sorting options -->
   <div class="flex gap-2">
-    <select v-model="sortField" @change="changeSorting" class="border px-2 py-1 rounded">
+    <select v-model="sortField" @change="changeSorting" class="appearance-none border px-2 py-1 pr-6 rounded bg-white bg-no-repeat bg-right">
       <option value="name">Name</option>
       <option value="price">Price</option>
       <option value="created_at">Created At</option>
     </select>
 
-    <select v-model="sortDirection" @change="changeSorting" class="border px-2 py-1 rounded">
+    <select v-model="sortDirection" @change="changeSorting" class="appearance-none border px-2 py-1 pr-6 rounded bg-white bg-no-repeat bg-right">
       <option value="asc">Ascending</option>
       <option value="desc">Descending</option>
     </select>
