@@ -7,22 +7,58 @@ const venues = ref([]);
 
 
 
+const sortField = ref('created_at');
+const sortDirection = ref('asc');
+const search = ref('');
+
 const getVenues = (page = 1) => {
-  axios.get(`/venue/getList?page=${page}`)
-    .then(res => venues.value = res.data)
-    .catch(error => console.log(error))
+  axios.get(`/venue/getList`, {
+    params: {
+      page,
+      sortField: sortField.value,
+      sortDirection: sortDirection.value,
+      search: search.value
+    }
+  })
+  .then(res => venues.value = res.data)
+  .catch(error => console.log(error));
 }
 
-// const getVenues = async (page = 1) => {
-//     const response = await fetch(`/venue/getList?page=${page}`);
-//     venues.value = await response.json();
-// }
+const changeSorting = () => getVenues();
+const submitSearch = () => getVenues();
+
 
 onMounted(() => getVenues());
 
 </script>
 
 <template>
+  <div class="flex justify-between items-center mb-4 px-2">
+  <!-- Search input -->
+  <input
+    v-model="search"
+    @keyup.enter="submitSearch"
+    type="text"
+    placeholder="Search venues..."
+    class="border px-3 py-1 rounded w-1/2 max-w-md"
+  />
+
+  <!-- Sorting options -->
+  <div class="flex gap-2">
+    <select v-model="sortField" @change="changeSorting" class="border px-2 py-1 rounded">
+      <option value="name">Name</option>
+      <option value="price">Price</option>
+      <option value="created_at">Created At</option>
+    </select>
+
+    <select v-model="sortDirection" @change="changeSorting" class="border px-2 py-1 rounded">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+</div>
+
+
   <div class="flex gap-3 flex-wrap justify-center">
     <div v-for="venue in venues.data" class="w-96 h-96 border border-sky-500 shadow-lg rounded-xl bg-white">
       <a :href="'/venue/' + venue.id + '?id=' + venue.id + '&userId=' + venue.user_id">

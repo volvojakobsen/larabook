@@ -12,10 +12,37 @@ use Illuminate\Validation\Rules\File;
 class VenueController extends Controller
 {
     //home
-    public function index()
-    {
-        return  Venue::paginate(12);         
+    public function index(Request $request)
+{
+    $sortField = $request->get('sortField', 'created_at');
+    $sortDirection = $request->get('sortDirection', 'asc');
+    $search = $request->get('search', '');
+
+    $allowedFields = ['name', 'price', 'created_at'];
+    $allowedDirections = ['asc', 'desc'];
+
+    if (!in_array($sortField, $allowedFields)) {
+        $sortField = 'created_at';
     }
+
+    if (!in_array($sortDirection, $allowedDirections)) {
+        $sortDirection = 'asc';
+    }
+
+    $query = Venue::query();
+
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%")
+              ->orWhere('price', 'like', "%{$search}%")
+              ->orWhere('address', 'like', "%{$search}%")
+              ->orWhere('city', 'like', "%{$search}%");
+        });
+    }
+
+    return $query->orderBy($sortField, $sortDirection)->paginate(12);
+}
 
     public function getUsersVenues()
     {
