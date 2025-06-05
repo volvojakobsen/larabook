@@ -50,7 +50,7 @@
       <div class="sm:col-span-4">
           <x-form-label for="price" >Price</x-form-label>
           <div class="mt-2">
-            <x-form-input id="price" name="price" type="price" placeholder="+47 800-55-800" value="{{ $Venue->price }}"/>
+            <x-form-input id="price" name="price" type="number" placeholder="+47 800-55-800" value="{{ $Venue->price }}"/>
             <x-form-error name="price" />
           </div>
       </div>
