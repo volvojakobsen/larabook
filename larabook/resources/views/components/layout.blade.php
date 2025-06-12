@@ -908,14 +908,6 @@
 </head>
 
 <body id="app" data-user="{{ auth()->check() ? auth()->user()->toJson() : '' }}" class="h-full flex flex-col text-gray-900">
-    <!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-gray-100">
-  <body class="h-full">
-  ```
--->
     <div class="flex flex-col flex-1">
         <nav class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -49,11 +49,7 @@ const queryParams = new URLSearchParams(url.search);
 const getVenue = () => {
     axios.get('/venueRequest/' + queryParams.get('id'))
         .then(res => venue.value = res.data)
-        // .then(getBookedDates())
         .then(getProducts())
-        // .then(dDate())
-        // .then(console.log(BookedDates))
-        // .then(makeDatesThing())
         .catch(error => console.log(error))
 }
 
@@ -61,7 +57,6 @@ const getVenue = () => {
 const getProducts = () => {
     axios.get('/products/show/' + queryParams.get('userId'))
         .then(res => products.value = res.data)
-        // .then(console.log(products))
         .catch(error => console.log(error))
 }
 

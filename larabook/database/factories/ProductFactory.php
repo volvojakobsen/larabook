@@ -18,8 +18,8 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $adjectives = ['Small', 'Ergonomic', 'Rustic', 'Smart', 'Incredible'];
-        $items = ['Chair', 'Car', 'Computer', 'Keyboard', 'Mouse', 'staff', 'catering', 'security', 'ticketing-staff', 'prostitutes'];
-        $prices = ['420', '1000', '240', '300', '1500', '100', '20', '10', '1999', '1'];
+        $items = ['Chair', 'Car', 'Computer', 'Keyboard', 'Mouse', 'staff', 'catering', 'security', 'ticketing-staff'];
+        $prices = ['4500', '1000', '240', '300', '1500', '100', '20', '10', '1999', '1'];
 
         return [
             'user_id' => User::factory(),

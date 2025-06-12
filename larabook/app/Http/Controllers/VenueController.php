@@ -13,36 +13,36 @@ class VenueController extends Controller
 {
     //home
     public function index(Request $request)
-{
-    $sortField = $request->get('sortField', 'created_at');
-    $sortDirection = $request->get('sortDirection', 'asc');
-    $search = $request->get('search', '');
+    {
+        $sortField = $request->get('sortField', 'created_at');
+        $sortDirection = $request->get('sortDirection', 'asc');
+        $search = $request->get('search', '');
 
-    $allowedFields = ['name', 'price', 'created_at'];
-    $allowedDirections = ['asc', 'desc'];
+        $allowedFields = ['name', 'price', 'created_at'];
+        $allowedDirections = ['asc', 'desc'];
 
-    if (!in_array($sortField, $allowedFields)) {
-        $sortField = 'created_at';
+        if (!in_array($sortField, $allowedFields)) {
+            $sortField = 'created_at';
+        }
+
+        if (!in_array($sortDirection, $allowedDirections)) {
+            $sortDirection = 'asc';
+        }
+
+        $query = Venue::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('price', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->orderBy($sortField, $sortDirection)->paginate(12);
     }
-
-    if (!in_array($sortDirection, $allowedDirections)) {
-        $sortDirection = 'asc';
-    }
-
-    $query = Venue::query();
-
-    if ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%")
-              ->orWhere('price', 'like', "%{$search}%")
-              ->orWhere('address', 'like', "%{$search}%")
-              ->orWhere('city', 'like', "%{$search}%");
-        });
-    }
-
-    return $query->orderBy($sortField, $sortDirection)->paginate(12);
-}
 
     public function getUsersVenues()
     {
@@ -61,7 +61,7 @@ class VenueController extends Controller
 
         return view('venues.show', ['Venue' => $venue]);
     }
-    
+
     // axios request for specific venue page
     public function findRequest($id)
     {
@@ -82,24 +82,14 @@ class VenueController extends Controller
             'price' => ['required'],
             'image' => ['required', File::types(['png', 'jpg', 'jpeg', 'webp'])],
             'description' => ['required'],
-            
-            
+
+
         ]);
 
         $venueImagePath = $request->image->store('venueImages');
 
         //dd($venueImagePath);
 
-        // dd([
-        //     'name' => request('name'),
-        //     'address' => request('address'),
-        //     'city' => request('city'),
-        //     'postal' => request('postal'),
-        //     'price' => request('price'),
-        //     'image' => $venueImagePath,
-        //     'description' => request('description'),
-        //     'user_id' => Auth::id()
-        // ]);
         Venue::create([
             'name' => request('name'),
             'address' => request('address'),
@@ -148,13 +138,12 @@ class VenueController extends Controller
             'price' => request('price'),
             'image' => $venueImagePath,
             'description' => request('description'),
-           // 'user_id' => Auth::id()
         ]);
 
         return redirect('/');
     }
 
-    public function myVenues() 
+    public function myVenues()
     {
         $allVenues = Venue::all();
         $allproducts = Product::all();

@@ -100,22 +100,6 @@
               <input type="radio" id="yes" name="isVenueAdmin" value="1">
               <label for="yes">yes</label><br>
 
-        <!-- <div class="flex justify-center mt-5">
-          <div class="sm:col-span-3">
-            <h3 class="font-bold">Are you going to rent out Venues that you own?</h3>
-            <div class="flex gap-3 justify-center">
-              <input type="radio" id="no" name="isVenueAdmin" value="0" checked="checked">
-              <label for="no">no</label><br>
-              <input type="radio" id="yes" name="isVenueAdmin" value="1">
-              <label for="yes">yes</label><br>
-            </div>
-          </div>
-        </div> -->
-
-
-
-
-
       </div>
 
       <div class="mt-6 flex items-center justify-end gap-x-6">
