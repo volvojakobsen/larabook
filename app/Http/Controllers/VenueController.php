@@ -86,7 +86,7 @@ class VenueController extends Controller
 
         ]);
 
-        $venueImagePath = $request->image->store('venueImages');
+        $venueImagePath = $request->image->store('venueImages', 'public');
 
         //dd($venueImagePath);
 
