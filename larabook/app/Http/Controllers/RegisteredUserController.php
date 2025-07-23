@@ -19,7 +19,7 @@ class RegisteredUserController extends Controller
         $validatedAttributes = request()->validate([
             'first_name' => ['required'],
             'last_name' => ['required'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'address' => ['required'],
             'city' => ['required'],
             'postal' => ['required'],

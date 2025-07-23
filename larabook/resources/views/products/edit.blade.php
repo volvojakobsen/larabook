@@ -26,7 +26,7 @@
                     <div class="sm:col-span-4">
                         <x-form-label for="price">Price</x-form-label>
                         <div class="mt-2">
-                            <x-form-input id="price" name="price" type="price" placeholder="100$" value="{{ $product->price }}" />
+                            <x-form-input id="price" name="price" type="number" placeholder="100$" value="{{ $product->price }}" />
                             <x-form-error name="price" />
                         </div>
                     </div>

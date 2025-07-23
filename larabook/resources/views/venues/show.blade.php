@@ -1,7 +1,8 @@
 <x-layout>
     <x-slot:heading>
+    {{ $Venue->name }}
         <div class="flex flex-row gap-3">
-        {{ $Venue->name }}
+       
         @if (Auth::check() && Auth::user()->isVenueAdmin && Auth::user()->id === $Venue->user_id)
         <x-editVenue-button href="/venue/edit/{{$Venue->id}}">Edit Venue</x-editVenue-button>
         <form action="/venue/{{$Venue->id}}" method="POST">

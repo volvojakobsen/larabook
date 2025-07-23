@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Venue extends Model
 {
+    use HasFactory;
 
     protected $table = 'venues';
 
@@ -34,6 +36,11 @@ class Venue extends Model
     {
         return url('storage/'.$this->image);
     }
+
+    public function bookings()
+     {
+        return $this->hasMany(Bookings::class, 'id');
+     }
 
 
 }

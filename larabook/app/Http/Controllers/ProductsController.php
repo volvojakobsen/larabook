@@ -10,7 +10,12 @@ class ProductsController extends Controller
 {
     public function index() 
     {
-        return  Product::all();
+        return  Auth::user()->product;
+    }
+
+    public function show($id) 
+    {
+        return  Product::where('user_id', $id)->get();
     }
 
     public function create() 

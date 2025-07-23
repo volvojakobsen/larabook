@@ -4,6 +4,7 @@ use App\Http\Middleware\LoggedIn;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\BookingsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\RegisteredUserController;
 
@@ -23,8 +24,16 @@ Route::get('/venue/{id}', [VenueController::class, 'show']);
 Route::get('/venueRequest/{id}', [VenueController::class, 'findRequest']);
 Route::get('/myVenues/index', [VenueController::class, 'myVenues'])->middleware(Admin::class);
 
+//bookings
+Route::get('/bookings/{id}', [BookingsController::class, 'index']);
+Route::post('/bookings/store', [BookingsController::class, 'store']);
+Route::get('/myBookings/index', [BookingsController::class, 'myBookings']);
+Route::get('/myBookings/getUsersBookings', [BookingsController::class, 'getUsersBookings']);
+Route::get('/myBookings/getUsersBookedProducts/{id}', [BookingsController::class, 'getUsersBookingProducts']);
+
 //products
 Route::get('/products/index', [ProductsController::class, 'index'])->middleware(Admin::class);
+Route::get('/products/show/{id}', [ProductsController::class, 'show'])->middleware(Admin::class);
 Route::get('/products/create', [ProductsController::class, 'create'])->middleware(Admin::class);
 Route::post('/products/store', [productsController::class, 'store'])->middleware(Admin::class);
 Route::get('/products/edit/{id}', [productsController::class, 'edit'])->middleware(Admin::class);
